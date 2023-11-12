@@ -17,22 +17,20 @@ public abstract class Apple {
         this.windowHeight = windowHeight;
     }
 
-    public boolean wasAppleEaten(Snake snake, Apple... apples) {
-        for (Apple appleFromList : apples) {
-            if (snake.getHead().getX() == appleFromList.getX() &&
-                    snake.getHead().getY() == appleFromList.getY()) {
-                if (coefficient > 0) {
-                    for (int i = 0; i < coefficient; i++) {
-                        snake.addBody();
-                    }
-                } else if (coefficient < 0) {
-                    for (int i = 0; i > coefficient; i--) {
-                        snake.removeBody();
-                    }
+    public boolean wasAppleEaten(Snake snake, Apple apple, Apple... apples) {
+        if (snake.getHead().getX() == apple.getX() &&
+                snake.getHead().getY() == apple.getY()) {
+            if (coefficient > 0) {
+                for (int i = 0; i < coefficient; i++) {
+                    snake.addBody();
                 }
-                createApplesList(apples);
-                return true;
+            } else if (coefficient < 0) {
+                for (int i = 0; i > coefficient; i--) {
+                    snake.removeBody();
+                }
             }
+            createApplesList(apples);
+            return true;
         }
         return false;
     }

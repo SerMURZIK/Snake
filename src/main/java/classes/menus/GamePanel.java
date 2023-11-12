@@ -169,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if (isAlive) {
             snake.getTail().move();
             checkApple(applesList);
-            isAlive = snake.checkDeath(getWidth(), getHeight()) || score >= 0;
+            isAlive = snake.checkDeath(getWidth(), getHeight()) && score >= 0;
         } else {
             removeKeyListener(listener);
         }
@@ -178,7 +178,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void checkApple(Apple... apples) {
         for (Apple apple : apples) {
-            if (apple.wasAppleEaten(snake, apples)) {
+            if (apple.wasAppleEaten(snake, apple, apples)) {
                 setSpeed(speed -= 2 * apple.getCoefficient());
                 score += apple.getCoefficient();
                 break;

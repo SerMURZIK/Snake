@@ -1,15 +1,19 @@
 package classes.menus;
 
-import apples.*;
-import classes.other.*;
-import classes.snakeClasses.*;
-import classes.snakeClasses.blockClasses.*;
+import apples.Apple;
+import apples.BonusApple;
+import apples.RedApple;
+import classes.other.Audio;
+import classes.snakeClasses.Direction;
+import classes.snakeClasses.Snake;
+import classes.snakeClasses.blockClasses.Block;
+import classes.snakeClasses.blockClasses.Body;
+import classes.snakeClasses.blockClasses.Head;
 
-import javax.swing.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
+import java.io.File;
 import java.util.List;
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -179,8 +183,8 @@ public class GamePanel extends JPanel implements ActionListener {
     public void checkApple(Apple... apples) {
         for (Apple apple : apples) {
             if (apple.wasAppleEaten(snake, apple, apples)) {
-                setSpeed(speed -= 2 * apple.getCoefficient());
-                score += apple.getCoefficient();
+                setSpeed(speed -= (short) (2 * apple.getCoefficient()));
+                score += (short) apple.getCoefficient();
                 break;
             }
         }

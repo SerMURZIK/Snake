@@ -1,18 +1,27 @@
 package classes.other;
 
-import classes.accountClasses.*;
-import classes.menus.*;
-import classes.snakeClasses.blockClasses.*;
-import com.google.gson.*;
+import classes.accountClasses.CurrentAccount;
+import classes.accountClasses.CurrentAccountSaveClass;
+import classes.accountClasses.SnakeSaveClass;
+import classes.menus.MainMenu;
+import classes.menus.SignInPanel;
+import classes.menus.SignUpPanel;
+import classes.menus.SignedPanel;
+import classes.menus.gameMenues.SinglePlayerPanel;
+import classes.snakeClasses.blockClasses.Block;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountActions {
-    private boolean ahalay;
+    private boolean ahalay; //for persons who signed for current session (isSignedForCurrentSession)
     private final JFrame window;
     private final File serviceFolderJson = new File("src/main/resources/files/saves/service");
     private final File gamersFolderJson = new File("src/main/resources/files/saves/gamers");
@@ -20,7 +29,7 @@ public class AccountActions {
     private final MainMenu mainMenu;
     private final SignInPanel signInPanel;
     private final CurrentAccount currentAccount;
-    private final GamePanel gamePanel;
+    private final SinglePlayerPanel gamePanel;
     private final SignUpPanel signUpPanel;
     private final SignedPanel signedPanel;
 
@@ -28,7 +37,7 @@ public class AccountActions {
                           MainMenu mainMenu,
                           SignInPanel signInPanel,
                           CurrentAccount currentAccount,
-                          GamePanel gamePanel,
+                          SinglePlayerPanel gamePanel,
                           SignUpPanel signUpPanel,
                           SignedPanel signedPanel) {
         this.window = window;
@@ -63,7 +72,7 @@ public class AccountActions {
                 }
                 readAccountFromJson();
             } catch (Exception exception) {
-                exception.printStackTrace();
+                throw new RuntimeException(exception);
             }
         } else {
             signInPanel.showWrongMessage();
@@ -84,14 +93,14 @@ public class AccountActions {
                         signUpPanel.getPassword(),
                         gamePanel.getApple().getX(),
                         gamePanel.getApple().getY(),
-                        gamePanel.getScore(),
-                        gamePanel.getSpeed(),
-                        gamePanel.getDirection(),
+                        gamePanel.getSnake().getScore(),
+                        gamePanel.getSnake().getSpeed(),
+                        gamePanel.getSnake().getDirection(),
                         snakeSaveClass.getX(),
                         snakeSaveClass.getY())));
                 updateExitListener();
             } catch (Exception exception) {
-                exception.printStackTrace();
+                throw new RuntimeException(exception);
             }
             file.flush();
 
@@ -99,7 +108,7 @@ public class AccountActions {
             ahalay = true;
             getAllInfoFromJson();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
         readAccountFromJson();
         changePanel(signUpPanel, mainMenu);
@@ -115,7 +124,7 @@ public class AccountActions {
             file.flush();
             readAccountFromJson();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -139,14 +148,15 @@ public class AccountActions {
                     currentAccount.getPassword(),
                     gamePanel.getApple().getX(),
                     gamePanel.getApple().getY(),
-                    gamePanel.getScore(),
-                    gamePanel.getSpeed(),
-                    gamePanel.getDirection(), x, y)));
+                    gamePanel.getSnake().getScore(),
+                    gamePanel.getSnake().getSpeed(),
+                    gamePanel.getSnake().getDirection(),
+                    x, y)));
             file.flush();
 
             writeCurrentAccountJson(currentAccount.getLogin(), currentAccount.getPassword(), currentAccount.getSigned());
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -162,7 +172,7 @@ public class AccountActions {
             currentAccount.setSigned(currentAccountSaveClass.getSigned());
             updateExitListener();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -175,10 +185,14 @@ public class AccountActions {
             Gson gson = builder.create();
             SnakeSaveClass snakeSaveClass = gson.fromJson(reader, SnakeSaveClass.class);
 
-            gamePanel.setInfo(snakeSaveClass.get_xApple(), snakeSaveClass.get_yApple(), snakeSaveClass.getScore(), snakeSaveClass.getSpeed(), snakeSaveClass.getX(), snakeSaveClass.getY());
-            gamePanel.setDirection(snakeSaveClass.getDirection());
+            gamePanel.setInfo(
+                    snakeSaveClass.get_xApple(),
+                    snakeSaveClass.get_yApple(),
+                    snakeSaveClass.getScore(),
+                    snakeSaveClass.getSpeed());
+            gamePanel.getSnake().setDirection(snakeSaveClass.getDirection());
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
@@ -195,7 +209,7 @@ public class AccountActions {
             ahalay = false;
             changePanel(signedPanel, mainMenu);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 

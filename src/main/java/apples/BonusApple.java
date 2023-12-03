@@ -1,11 +1,11 @@
 package apples;
 
 import classes.snakeClasses.Snake;
+import classes.snakeClasses.blockClasses.Body;
 
 import javax.swing.*;
 
 public class BonusApple extends Apple {
-    private final Thread settingAppleThread = new Thread(getRunnable());
 
     public BonusApple(int windowWidth, int windowHeight, int coefficient, ImageIcon appleIco) {
         super(windowWidth, windowHeight, coefficient, appleIco);
@@ -20,7 +20,7 @@ public class BonusApple extends Apple {
             setY(-100);
             int a = (int) (Math.random() * 10) + 1;
             if (a < 6) {
-                settingAppleThread.start();
+                new Thread(getRunnable()).start();
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -30,15 +30,16 @@ public class BonusApple extends Apple {
     private Runnable getRunnable() {
         return () -> {
             try {
-                setX(((int) (Math.random() * windowWidth / Snake.BODY_SIZE)) * Snake.BODY_SIZE);
-                setY(((int) (Math.random() * windowHeight / Snake.BODY_SIZE)) * Snake.BODY_SIZE);
+                setX(((int) (Math.random() * windowWidth / Body.BODY_SIZE)) * Body.BODY_SIZE);
+                setY(((int) (Math.random() * windowHeight / Body.BODY_SIZE)) * Body.BODY_SIZE);
                 Thread.sleep(5000);
-                setX(-100);
-                setY(-100);
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                Thread.currentThread().interrupt();
+                setX(-100);
+                setY(-100);
             }
-            settingAppleThread.interrupt();
         };
     }
 }

@@ -45,16 +45,16 @@ public class Head extends Block {
     public void move() {
         switch (direction) {
             case UP:
-                setY(getY() - Snake.BODY_SIZE);
+                setY(getY() - Body.BODY_SIZE);
                 break;
             case DOWN:
-                setY(getY() + Snake.BODY_SIZE);
+                setY(getY() + Body.BODY_SIZE);
                 break;
             case LEFT:
-                setX(getX() - Snake.BODY_SIZE);
+                setX(getX() - Body.BODY_SIZE);
                 break;
             case RIGHT:
-                setX(getX() + Snake.BODY_SIZE);
+                setX(getX() + Body.BODY_SIZE);
                 break;
         }
     }

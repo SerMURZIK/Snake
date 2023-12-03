@@ -10,7 +10,6 @@ public class MainMenu extends JPanel {
     private final JButton multiplayer = new JButton("Multiplayer");
     private final JButton account = new JButton("Account");
     private final JButton exit = new JButton("Exit");
-    private boolean signed;
     private ActionListener exitListener;
 
     public MainMenu() {
@@ -18,12 +17,15 @@ public class MainMenu extends JPanel {
         exit.addActionListener(e -> System.exit(0));
 
         add(start);
+        add(multiplayer);
         add(settings);
         add(account);
         add(exit);
 
         start.setFont(font);
         start.setBackground(Color.WHITE);
+        multiplayer.setFont(font);
+        multiplayer.setBackground(Color.WHITE);
         settings.setFont(font);
         settings.setBackground(Color.WHITE);
         account.setFont(font);
@@ -49,7 +51,6 @@ public class MainMenu extends JPanel {
     }
 
     public void updateSign(boolean signed) {
-        this.signed = signed;
         if (signed) {
             exit.removeActionListener(exitListener);
         } else {

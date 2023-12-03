@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Block {
+    public final static int BODY_SIZE = 30;
     private int x, y;
     private Block previous;
     private Block next;

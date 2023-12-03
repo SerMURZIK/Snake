@@ -1,23 +1,33 @@
 package classes.snakeClasses;
 
-import classes.snakeClasses.blockClasses.*;
+import classes.snakeClasses.blockClasses.Block;
+import classes.snakeClasses.blockClasses.Body;
+import classes.snakeClasses.blockClasses.Head;
+
+import static classes.snakeClasses.blockClasses.Block.BODY_SIZE;
 
 public class Snake {
-    public static final byte BODY_SIZE = 30;//в пикселях
-    public static final int INITIAL_X = 1800;
-    public static final int INITIAL_Y = 600;
+    private short score = 0;
+    protected final short startSpeed = 100;
+    private short speed = startSpeed;
     private Head head;
     private Block tail;
 
-    public Snake() {
-        createSnake();
+    public Snake(Direction direction, int initialX, int initialY) {
+        createSnake(initialX, initialY, direction);
     }
 
-    public void createSnake() {
-        head = new Head(INITIAL_X, INITIAL_Y);
+    public void createSnake(int initialX, int initialY, Direction direction) {
+        head = new Head(initialX, initialY);
+        setDirection(direction);
         Block previous = this.head;
         for (int i = 1; i <= 5; i++) {
-            Block next = new Body(INITIAL_X + i * BODY_SIZE, INITIAL_Y);
+            Block next = switch (getDirection()) {
+                case LEFT -> new Body(initialX + i * BODY_SIZE, initialY);
+                case UP -> new Body(initialX, initialY + i * BODY_SIZE);
+                case DOWN -> new Body(initialX, initialY - i * BODY_SIZE);
+                case RIGHT -> new Body(initialX - i * BODY_SIZE, initialY);
+            };
             previous.setNext(next);
             next.setPrevious(previous);
             previous = next;
@@ -71,8 +81,11 @@ public class Snake {
     }
 
     public void removeBody() {
-        tail = tail.getPrevious();
-        tail.setNext(null);
+        try {
+            tail = tail.getPrevious();
+            tail.setNext(null);
+        } catch (IllegalThreadStateException ignored) {
+        }
     }
 
     public Direction getDirection() {
@@ -81,5 +94,29 @@ public class Snake {
 
     public void setDirection(Direction direction) {
         getHead().setDirection(direction);
+    }
+
+    public short getScore() {
+        return score;
+    }
+
+    public void setScore(short score) {
+        this.score = score;
+    }
+
+    public short getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(short speed) {
+        this.speed = speed;
+    }
+
+    public void setStartSpeed() {
+        speed = startSpeed;
+    }
+
+    public Snake getSnake() {
+        return this;
     }
 }

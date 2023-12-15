@@ -1,11 +1,12 @@
 package classes.menus.gameMenues;
 
-import apples.Apple;
+import classes.apples.Apple;
 import classes.snakeClasses.Direction;
 import classes.snakeClasses.Snake;
 import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,12 +22,10 @@ public class SinglePlayerPanel extends GamePanel {
 
     private final Timer snakeTimer = new Timer(snake.getSpeed(), this);
 
-    public void setInfo(int xApple, int yApple,
-                        short score, short speed) {
+    public void setInfo(short score, short speed, Direction direction, List<Integer> x, List<Integer> y) {
         snake.setScore(score);
         snake.setSpeed(speed);
-        standardApple.setY(yApple);
-        standardApple.setX(xApple);
+        snake.createSnake(direction, x, y);
     }
 
     @Override

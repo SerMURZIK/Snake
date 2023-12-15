@@ -1,6 +1,5 @@
-package apples;
+package classes.apples;
 
-import classes.snakeClasses.*;
 import classes.snakeClasses.blockClasses.Body;
 
 import javax.swing.*;

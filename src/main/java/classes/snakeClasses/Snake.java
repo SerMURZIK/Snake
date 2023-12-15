@@ -4,6 +4,8 @@ import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 import classes.snakeClasses.blockClasses.Head;
 
+import java.util.List;
+
 import static classes.snakeClasses.blockClasses.Block.BODY_SIZE;
 
 public class Snake {
@@ -28,6 +30,19 @@ public class Snake {
                 case DOWN -> new Body(initialX, initialY - i * BODY_SIZE);
                 case RIGHT -> new Body(initialX - i * BODY_SIZE, initialY);
             };
+            previous.setNext(next);
+            next.setPrevious(previous);
+            previous = next;
+        }
+        tail = previous;
+    }
+
+    public void createSnake(Direction direction, List<Integer> x, List<Integer> y) {
+        head = new Head(x.get(0), y.get(0));
+        setDirection(direction);
+        Block previous = this.head;
+        for (int i = 1; i < x.size(); i++) {
+            Block next = new Body(x.get(i), y.get(i));
             previous.setNext(next);
             next.setPrevious(previous);
             previous = next;
@@ -110,10 +125,6 @@ public class Snake {
 
     public void setSpeed(short speed) {
         this.speed = speed;
-    }
-
-    public void setStartSpeed() {
-        speed = startSpeed;
     }
 
     public Snake getSnake() {

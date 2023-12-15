@@ -1,6 +1,6 @@
 package classes.menus.gameMenues;
 
-import apples.Apple;
+import classes.apples.Apple;
 import classes.snakeClasses.Direction;
 import classes.snakeClasses.Snake;
 import classes.snakeClasses.blockClasses.Block;

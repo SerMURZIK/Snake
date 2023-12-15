@@ -1,29 +1,29 @@
 package classes.menus.gameMenues;
 
-import apples.Apple;
-import apples.BonusApple;
-import apples.RedApple;
+import classes.apples.Apple;
+import classes.apples.BonusApple;
+import classes.apples.RedApple;
 import classes.other.Audio;
 
+import java.io.File;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.io.File;
 
 public abstract class GamePanel extends JPanel implements ActionListener {
     public static int GAME_PANEL_WIDTH = 3300;
     public static int GAME_PANEL_HEIGHT = 1200;
 
     protected final RedApple standardApple = new RedApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 1,
-            new ImageIcon("src/main/resources/files/sprites/apples/apple.png"));
+            new ImageIcon("src/main/resources/files/sprites/classes.apples/apple.png"));
 
     protected final BonusApple bonusGoodApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 2,
-            new ImageIcon("src/main/resources/files/sprites/apples/goodApple.png"));
+            new ImageIcon("src/main/resources/files/sprites/classes.apples/goodApple.png"));
 
     protected final BonusApple bonusBadApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, -3,
-            new ImageIcon("src/main/resources/files/sprites/apples/badApple.png"));
+            new ImageIcon("src/main/resources/files/sprites/classes.apples/badApple.png"));
 
     protected final Apple[] applesList = {standardApple, bonusBadApple, bonusGoodApple};
     protected final Font font = new Font("TimesNewRoman", Font.BOLD, 50);

@@ -2,23 +2,18 @@ package classes.accountClasses;
 
 import classes.snakeClasses.*;
 
-import java.util.List;
-
+import java.util.*;
 
 public class SnakeSaveClass {
     public String password;
-    public int xApple, yApple;
     public short score, speed;
     public Direction direction;
     public List<Integer> x, y;
 
     public SnakeSaveClass(String password,
-                          int xApple, int yApple,
                           short score, short speed,
                           Direction direction,
                           List<Integer> x, List<Integer> y) {
-        this.xApple = xApple;
-        this.yApple = yApple;
         this.score = score;
         this.speed = speed;
         this.direction = direction;
@@ -29,14 +24,6 @@ public class SnakeSaveClass {
 
     public String getPassword() {
         return password;
-    }
-
-    public int get_xApple() {
-        return xApple;
-    }
-
-    public int get_yApple() {
-        return yApple;
     }
 
     public short getScore() {

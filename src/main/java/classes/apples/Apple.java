@@ -1,4 +1,4 @@
-package apples;
+package classes.apples;
 
 import classes.snakeClasses.*;
 

@@ -1,5 +1,6 @@
 package classes.other;
 
+import classes.accountClasses.AccountActions;
 import classes.accountClasses.CurrentAccount;
 import classes.menus.*;
 import classes.menus.gameMenues.MultiplayerPanel;
@@ -167,7 +168,7 @@ public class GameWindow {
     }
 
     public void addSignedPanelListeners() {
-        signedPanel.setSaveListener(e -> accountActions.saveProgress());
+        signedPanel.setSaveListener(e -> accountActions.saveGame());
 
         signedPanel.setLoadListener(e -> accountActions.getAllInfoFromJson());
 

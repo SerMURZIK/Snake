@@ -5,14 +5,6 @@ import classes.snakeClasses.*;
 import javax.swing.*;
 
 public class Head extends Block {
-    private final ImageIcon headLeft
-            = new ImageIcon("src/main/resources/files/sprites/single/headLeft.png");
-    private final ImageIcon headRight
-            = new ImageIcon("src/main/resources/files/sprites/single/headRight.png");
-    private final ImageIcon headUp
-            = new ImageIcon("src/main/resources/files/sprites/single/headUp.png");
-    private final ImageIcon headDown
-            = new ImageIcon("src/main/resources/files/sprites/single/headDown.png");
 
     private Direction direction = Direction.LEFT;
 
@@ -26,20 +18,12 @@ public class Head extends Block {
 
     @Override
     public ImageIcon getIco() {
-        switch (direction) {
-            case UP:
-                return headUp;
-
-            case DOWN:
-                return headDown;
-
-            case LEFT:
-                return headLeft;
-
-            case RIGHT:
-                return headRight;
-        }
-        return null;
+        return switch (direction) {
+            case UP -> getHeadUp();
+            case DOWN -> getHeadDown();
+            case LEFT -> getHeadLeft();
+            case RIGHT -> getHeadRight();
+        };
     }
 
     public void move() {
@@ -57,6 +41,22 @@ public class Head extends Block {
                 setX(getX() + Body.BODY_SIZE);
                 break;
         }
+    }
+
+    public ImageIcon getHeadDown() {
+        return new ImageIcon("src/main/resources/files/sprites/single/headDown.png");
+    }
+
+    public ImageIcon getHeadRight() {
+        return new ImageIcon("src/main/resources/files/sprites/single/headRight.png");
+    }
+
+    public ImageIcon getHeadLeft() {
+        return new ImageIcon("src/main/resources/files/sprites/single/headLeft.png");
+    }
+
+    public ImageIcon getHeadUp() {
+        return new ImageIcon("src/main/resources/files/sprites/single/headUp.png");
     }
 
     public Direction getDirection() {

@@ -31,7 +31,7 @@ public class GameWindow {
     private final SignedPanel signedPanel = new SignedPanel();
     private final SignUpPanel signUpPanel = new SignUpPanel();
 
-    private final CurrentAccount currentAccount = new CurrentAccount();
+    private CurrentAccount currentAccount = new CurrentAccount();
     private final AccountActions accountActions = new AccountActions(
             window,
             mainMenu,
@@ -128,7 +128,8 @@ public class GameWindow {
 
     public void openAccountMenu() {
         window.remove(mainMenu);
-        if (currentAccount.getSigned() || accountActions.getKeepMeSigned()) {
+        currentAccount = accountActions.getCurrentAccount();
+        if (currentAccount.getSigned() || accountActions.getRememberMe()) {
             window.add(signedPanel);
             window.setSize(new Dimension(signedPanel.getWidth(), signedPanel.getHeight()));
         } else {

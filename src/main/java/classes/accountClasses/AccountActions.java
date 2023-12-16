@@ -1,10 +1,11 @@
 package classes.accountClasses;
 
+import classes.accountClasses.json.CurrentAccountJsonWriter;
 import classes.accountClasses.json.JsonReader;
+import classes.accountClasses.json.SaveSnakeJsonWriter;
 import classes.menus.*;
 import classes.menus.gameMenues.SinglePlayerPanel;
-import classes.snakeClasses.blockClasses.*;
-import com.google.gson.*;
+import classes.snakeClasses.blockClasses.Block;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,11 +20,11 @@ public class AccountActions {
     private static final String CLEAR_ACCOUNT = "clearAccount";
     private static final String CURRENT_LOGIN = "currentLogin";
 
-    private boolean keepMeSigned; //for persons who signed for current session (isSignedForCurrentSession)
+    private boolean rememberMe; //for persons who signed for current session (isSignedForCurrentSession)
     private final JFrame window;
     private final MainMenu mainMenu;
     private final SignInPanel signInPanel;
-    private final CurrentAccount currentAccount;
+    private CurrentAccount currentAccount;
     private final SinglePlayerPanel gamePanel;
     private final SignUpPanel signUpPanel;
     private final SignedPanel signedPanel;
@@ -45,114 +46,89 @@ public class AccountActions {
     }
 
     public void signIn() {
+        JsonReader<SaveSnakeClass> reader = new JsonReader<>();
         if (new File(String.format(GAMERS_FOLDER_JSON, signInPanel.getLogin())).exists()) {
-            try (FileReader reader = new FileReader(
-                    String.format(GAMERS_FOLDER_JSON, signInPanel.getLogin()))) {
+            SaveSnakeClass saveSnakeClass = reader.getObjectFromJson(GAMERS_FOLDER_JSON, signInPanel.getLogin(), SaveSnakeClass.class);
 
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                SnakeSaveClass snakeSaveClass = gson.fromJson(reader, SnakeSaveClass.class);
+            if (signInPanel.getPassword().equals(saveSnakeClass.getPassword())) {
+                writeCurrentAccountJson(signInPanel.getLogin(), signInPanel.getPassword(), signInPanel.getSigned());
 
-                if (signInPanel.getPassword().equals(snakeSaveClass.getPassword())) {
-                    writeCurrentAccountJson(signInPanel.getLogin(), signInPanel.getPassword(), signInPanel.getSigned());
+                getAllInfoFromJson();
+                changePanel(signInPanel, mainMenu);
 
-                    getAllInfoFromJson();
-                    changePanel(signInPanel, mainMenu);
-
-                    signInPanel.removeWrongMessage();
-                    signInPanel.cleanFields();
-                    keepMeSigned = true;
-                } else {
-                    signInPanel.showWrongMessage();
-                }
-                readAccountFromJson();
-            } catch (Exception exception) {
-                throw new RuntimeException(exception);
+                signInPanel.removeWrongMessage();
+                signInPanel.cleanFields();
+                rememberMe = true;
+            } else {
+                signInPanel.showWrongMessage();
             }
+            readAccountFromJson();
         } else {
             signInPanel.showWrongMessage();
         }
     }
 
     public void writeNewAccount() {
-        try (FileWriter file = new FileWriter(String.format(GAMERS_FOLDER_JSON, signUpPanel.getLogin()))) {
-            GsonBuilder builderW = new GsonBuilder();
-            Gson gsonW = builderW.create();
-
-            try (FileReader reader = new FileReader(String.format(SERVICE_FOLDER_JSON, CLEAR_ACCOUNT))) {
-                GsonBuilder builderR = new GsonBuilder();
-                Gson gsonR = builderR.create();
-                SnakeSaveClass snakeSaveClass = gsonR.fromJson(reader, SnakeSaveClass.class);
-                file.write(gsonW.toJson(new SnakeSaveClass(
-                        signUpPanel.getPassword(),
-                        gamePanel.getSnake().getScore(),
-                        gamePanel.getSnake().getSpeed(),
-                        gamePanel.getSnake().getDirection(),
-                        snakeSaveClass.getX(),
-                        snakeSaveClass.getY())));
-                updateExitListener();
-            } catch (Exception exception) {
-                throw new RuntimeException(exception);
-            }
-            file.flush();
-
-            writeCurrentAccountJson(signUpPanel.getLogin(), signUpPanel.getPassword(), signUpPanel.getSigned());
-            keepMeSigned = true;
-            getAllInfoFromJson();
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
+        SaveSnakeJsonWriter.write(GAMERS_FOLDER_JSON, signUpPanel.getLogin(),
+                signUpPanel.getPassword(),
+                gamePanel.getSnake().getScore(),
+                gamePanel.getSnake().getSpeed(),
+                gamePanel.getSnake().getDirection(),
+                getSnakeXCoordinates(), getSnakeYCoordinates());
+        writeCurrentAccountJson(signUpPanel.getLogin(), signUpPanel.getPassword(), signUpPanel.getSigned());
+        rememberMe = true;
+        getAllInfoFromJson();
         readAccountFromJson();
         changePanel(signUpPanel, mainMenu);
         signUpPanel.cleanFields();
     }
 
     public void writeCurrentAccountJson(String login, String password, boolean signed) {
-        try (FileWriter file = new FileWriter(String.format(SERVICE_FOLDER_JSON, CURRENT_LOGIN))) {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-
-            file.write(gson.toJson(new CurrentAccountSaveClass(login, password, signed)));
-            file.flush();
-            readAccountFromJson();
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
+        CurrentAccountJsonWriter.write(SERVICE_FOLDER_JSON, CURRENT_LOGIN, login, password, signed);
+        rememberMe = signed;
+        updateCurrentAccount();
     }
 
     public void saveGame() {
-        try (FileWriter file = new FileWriter(String.format(GAMERS_FOLDER_JSON, currentAccount.getLogin()))) {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            List<Integer> x = new ArrayList<>();
-            List<Integer> y = new ArrayList<>();
+        SaveSnakeJsonWriter.write(GAMERS_FOLDER_JSON, currentAccount.getLogin(), currentAccount.getPassword(),
+                gamePanel.getSnake().getScore(), gamePanel.getSnake().getSpeed(),
+                gamePanel.getSnake().getDirection(),
+                getSnakeXCoordinates(), getSnakeYCoordinates());
 
-            Block current = gamePanel.getSnake().getHead();
+        writeCurrentAccountJson(currentAccount.getLogin(), currentAccount.getPassword(), currentAccount.getSigned());
+    }
+
+    public List<List<Integer>> getSnakeCoordinates() {
+        List<Integer> x = new ArrayList<>();
+        List<Integer> y = new ArrayList<>();
+
+        Block current = gamePanel.getSnake().getHead();
+        x.add(current.getX());
+        y.add(current.getY());
+        do {
+            current = current.getNext();
             x.add(current.getX());
             y.add(current.getY());
-            do {
-                current = current.getNext();
-                x.add(current.getX());
-                y.add(current.getY());
-            } while (current.getNext() != null);
+        } while (current.getNext() != null);
 
-            file.write(gson.toJson(new SnakeSaveClass(
-                    currentAccount.getPassword(),
-                    gamePanel.getSnake().getScore(),
-                    gamePanel.getSnake().getSpeed(),
-                    gamePanel.getSnake().getDirection(),
-                    x, y)));
-            file.flush();
+        List<List<Integer>> a = new ArrayList<>();
+        a.add(x);
+        a.add(y);
+        return a;
+    }
 
-            writeCurrentAccountJson(currentAccount.getLogin(), currentAccount.getPassword(), currentAccount.getSigned());
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
+    public List<Integer> getSnakeXCoordinates() {
+        return getSnakeCoordinates().get(0);
+    }
+
+    public List<Integer> getSnakeYCoordinates() {
+        return getSnakeCoordinates().get(1);
     }
 
     public void readAccountFromJson() {
         JsonReader<CurrentAccountSaveClass> jsonReader = new JsonReader<>();
-        CurrentAccountSaveClass currentAccountSaveClass = jsonReader.getObjectFromJson(SERVICE_FOLDER_JSON, CURRENT_LOGIN, CurrentAccountSaveClass.class);
+        CurrentAccountSaveClass currentAccountSaveClass =
+                jsonReader.getObjectFromJson(SERVICE_FOLDER_JSON, CURRENT_LOGIN, CurrentAccountSaveClass.class);
 
         currentAccount.setLogin(currentAccountSaveClass.getLogin());
         currentAccount.setPassword(currentAccountSaveClass.getPassword());
@@ -161,16 +137,17 @@ public class AccountActions {
     }
 
     public void getAllInfoFromJson() {
-        String folder = currentAccount.getSigned() ? GAMERS_FOLDER_JSON : SERVICE_FOLDER_JSON;
-        JsonReader<SnakeSaveClass> jsonReader = new JsonReader<>();
-        SnakeSaveClass snakeSaveClass = jsonReader.getObjectFromJson(folder, currentAccount.getLogin(), SnakeSaveClass.class);
-        Optional.ofNullable(snakeSaveClass)
+        String folder = currentAccount.getSigned() || rememberMe ? GAMERS_FOLDER_JSON : SERVICE_FOLDER_JSON;
+        JsonReader<SaveSnakeClass> jsonReader = new JsonReader<>();
+        SaveSnakeClass saveSnakeClass = jsonReader.getObjectFromJson(folder, currentAccount.getLogin(), SaveSnakeClass.class);
+        Optional.ofNullable(saveSnakeClass)
                 .ifPresent(this::setSavedSnakeInfoToPanel);
     }
 
 
-    private void setSavedSnakeInfoToPanel(SnakeSaveClass snakeSave) {
-        gamePanel.setInfo(snakeSave.getScore(), snakeSave.getSpeed(), snakeSave.getDirection(), snakeSave.getX(), snakeSave.getY());
+    private void setSavedSnakeInfoToPanel(SaveSnakeClass snakeSave) {
+        gamePanel.setInfo(snakeSave.getScore(), snakeSave.getSpeed(),
+                snakeSave.getDirection(), snakeSave.getX(), snakeSave.getY());
     }
 
     public void cleanAccount() {
@@ -180,7 +157,7 @@ public class AccountActions {
         writeCurrentAccountJson(CLEAR_ACCOUNT, currAcc.getPassword(), false);
         getAllInfoFromJson();
 
-        keepMeSigned = false;
+        rememberMe = false;
         changePanel(signedPanel, mainMenu);
     }
 
@@ -196,7 +173,16 @@ public class AccountActions {
         window.setVisible(true);
     }
 
-    public boolean getKeepMeSigned() {
-        return keepMeSigned;
+    public boolean getRememberMe() {
+        return rememberMe;
+    }
+
+    public void updateCurrentAccount() {
+        JsonReader<CurrentAccount> reader = new JsonReader<>();
+        currentAccount = reader.getObjectFromJson(SERVICE_FOLDER_JSON, CURRENT_LOGIN, CurrentAccount.class);
+    }
+
+    public CurrentAccount getCurrentAccount() {
+        return currentAccount;
     }
 }

@@ -4,13 +4,13 @@ import classes.snakeClasses.*;
 
 import java.util.*;
 
-public class SnakeSaveClass {
+public class SaveSnakeClass {
     public String password;
     public short score, speed;
     public Direction direction;
     public List<Integer> x, y;
 
-    public SnakeSaveClass(String password,
+    public SaveSnakeClass(String password,
                           short score, short speed,
                           Direction direction,
                           List<Integer> x, List<Integer> y) {

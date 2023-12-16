@@ -128,7 +128,7 @@ public class GameWindow {
 
     public void openAccountMenu() {
         window.remove(mainMenu);
-        if (currentAccount.getSigned() || accountActions.getAhalay()) {
+        if (currentAccount.getSigned() || accountActions.getKeepMeSigned()) {
             window.add(signedPanel);
             window.setSize(new Dimension(signedPanel.getWidth(), signedPanel.getHeight()));
         } else {

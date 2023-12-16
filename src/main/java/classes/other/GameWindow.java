@@ -19,7 +19,6 @@ public class GameWindow {
 
     private final MainMenu mainMenu = new MainMenu();
     private final StartMenu startMenuPanel = new StartMenu();
-    private final SettingSize settingSizePanel = new SettingSize();
     private final SettingsPanel settingsPanel = new SettingsPanel();
     private final RestartPanel restartPanelSinglePlayer = new RestartPanel();
     private final RestartPanel restartMultiplayerPanel = new RestartPanel();
@@ -74,15 +73,8 @@ public class GameWindow {
         multiplayer.setExitListener(e -> openMultiplayerMainMenu());
 
         startMenuPanel.setStartListener(e -> {
-            changePanel(startMenuPanel, settingSizePanel);
+            changePanel(startMenuPanel, mainMenu);
             accountActions.getAllInfoFromJson();
-        });
-
-        settingSizePanel.setEnterSizeListener(e -> {
-            if (settingSizePanel.wasEntered()) {
-                changePanel(settingSizePanel, mainMenu);
-                settingSizePanel.cleanFields();
-            }
         });
 
         addMainMenuListeners();
@@ -204,7 +196,6 @@ public class GameWindow {
     }
 
     public void addSettingsPanelListeners() {
-        settingsPanel.settingSizeListener(e -> changePanel(settingsPanel, settingSizePanel));
         settingsPanel.setBackListener(e -> changePanel(settingsPanel, mainMenu));
     }
 

@@ -17,13 +17,13 @@ public abstract class GamePanel extends JPanel implements ActionListener {
     public static int GAME_PANEL_HEIGHT = 1200;
 
     protected final RedApple standardApple = new RedApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 1,
-            new ImageIcon("src/main/resources/files/sprites/classes.apples/apple.png"));
+            new ImageIcon("src/main/resources/files/sprites/apples/apple.png"));
 
     protected final BonusApple bonusGoodApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 2,
-            new ImageIcon("src/main/resources/files/sprites/classes.apples/goodApple.png"));
+            new ImageIcon("src/main/resources/files/sprites/apples/goodApple.png"));
 
     protected final BonusApple bonusBadApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, -3,
-            new ImageIcon("src/main/resources/files/sprites/classes.apples/badApple.png"));
+            new ImageIcon("src/main/resources/files/sprites/apples/badApple.png"));
 
     protected final Apple[] applesList = {standardApple, bonusBadApple, bonusGoodApple};
     protected final Font font = new Font("TimesNewRoman", Font.BOLD, 50);

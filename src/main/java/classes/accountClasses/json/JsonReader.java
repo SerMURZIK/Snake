@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import java.io.FileReader;
 
 
-public class JsonReader <T> {
+public class JsonReader<T> {
 
     public T getObjectFromJson(String folder, String login, Class<T> objectClass) {
         GsonBuilder builder = new GsonBuilder();

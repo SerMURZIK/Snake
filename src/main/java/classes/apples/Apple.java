@@ -1,6 +1,6 @@
 package classes.apples;
 
-import classes.snakeClasses.*;
+import classes.snakeClasses.Snake;
 
 import javax.swing.*;
 import java.awt.*;

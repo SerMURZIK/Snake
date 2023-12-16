@@ -14,9 +14,6 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
     private final JFrame window = new JFrame();
 
-    public  static int WINDOW_WIDTH = 1800;
-    public  static int WINDOW_HEIGHT = 1800;
-
     private SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
     private MultiplayerPanel multiplayer = new MultiplayerPanel();
 
@@ -237,13 +234,5 @@ public class GameWindow {
             multiplayer.loadLastSave();
             multiplayer.requestFocus();
         });
-    }
-
-    public static void setWindowWidth(int windowWidth) {
-        WINDOW_WIDTH = windowWidth;
-    }
-
-    public static void setWindowHeight(int windowHeight) {
-        WINDOW_HEIGHT = windowHeight;
     }
 }

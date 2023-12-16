@@ -12,8 +12,8 @@ import java.util.List;
 public class SaveSnakeJsonWriter {
 
     public static void write(String folder, String login, String password,
-                      short score, short speed, Direction direction,
-                      List<Integer> x, List<Integer> y) {
+                             short score, short speed, Direction direction,
+                             List<Integer> x, List<Integer> y) {
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();

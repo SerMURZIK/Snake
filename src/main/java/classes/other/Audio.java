@@ -1,10 +1,12 @@
 package classes.other;
 
-import javax.sound.sampled.*;
-import java.io.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 
 public class Audio {
-    private Clip clip;
+    private final Clip clip;
 
     public Audio(File soundFile) {
         try {
@@ -12,12 +14,12 @@ public class Audio {
             clip = AudioSystem.getClip();
             clip.open(audioStream);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new RuntimeException(exception);
         }
     }
 
     public void play() {
-       //clip.start();
+        //clip.start();
     }
 
     public void stop() {

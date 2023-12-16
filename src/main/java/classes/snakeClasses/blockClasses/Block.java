@@ -19,6 +19,7 @@ public abstract class Block {
     }
 
     public abstract ImageIcon getIco();
+
     public abstract void move();
 
     public int getX() {

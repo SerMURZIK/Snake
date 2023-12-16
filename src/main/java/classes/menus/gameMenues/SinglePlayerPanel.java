@@ -6,13 +6,13 @@ import classes.snakeClasses.Snake;
 import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 public class SinglePlayerPanel extends GamePanel {
     private final Snake snake = new Snake(

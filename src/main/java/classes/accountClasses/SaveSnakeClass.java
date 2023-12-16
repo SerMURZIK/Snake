@@ -1,8 +1,8 @@
 package classes.accountClasses;
 
-import classes.snakeClasses.*;
+import classes.snakeClasses.Direction;
 
-import java.util.*;
+import java.util.List;
 
 public class SaveSnakeClass {
     public String password;

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class StartMenu extends JPanel{
+public class StartMenu extends JPanel {
     private final int width = 800;
     private final int height = 600;
     private final JButton start = new JButton("Начать");

@@ -5,12 +5,12 @@ import classes.apples.BonusApple;
 import classes.apples.RedApple;
 import classes.other.Audio;
 
-import java.io.File;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 public abstract class GamePanel extends JPanel implements ActionListener {
     public static int GAME_PANEL_WIDTH = 3300;
@@ -43,7 +43,7 @@ public abstract class GamePanel extends JPanel implements ActionListener {
         setBackground(new Color(54, 143, 255, 255));
         addKeyListener(listener);
     }
-    
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -71,10 +71,6 @@ public abstract class GamePanel extends JPanel implements ActionListener {
     public abstract void actionPerformed(ActionEvent e);
 
     public abstract void checkApple(Apple... apples);
-
-    public RedApple getApple() {
-        return standardApple;
-    }
 
     @Override
     public int getWidth() {

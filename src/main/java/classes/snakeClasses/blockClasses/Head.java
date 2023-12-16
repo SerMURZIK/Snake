@@ -1,6 +1,6 @@
 package classes.snakeClasses.blockClasses;
 
-import classes.snakeClasses.*;
+import classes.snakeClasses.Direction;
 
 import javax.swing.*;
 

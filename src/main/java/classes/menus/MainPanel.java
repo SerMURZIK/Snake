@@ -4,21 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainMenu extends JPanel {
+public class MainPanel extends JPanel {
     private final JButton start = new JButton("Start");
-    private final JButton settings = new JButton("Settings");
     private final JButton multiplayer = new JButton("Multiplayer");
     private final JButton account = new JButton("Account");
+    private final JButton teachingPanel = new JButton("Control buttons");
     private final JButton exit = new JButton("Exit");
     private ActionListener exitListener;
 
-    public MainMenu() {
+    public MainPanel() {
         Font font = new Font("Calibri", Font.BOLD, 20);
         exit.addActionListener(e -> System.exit(0));
 
         add(start);
         add(multiplayer);
-        add(settings);
+        add(teachingPanel);
         add(account);
         add(exit);
 
@@ -26,8 +26,8 @@ public class MainMenu extends JPanel {
         start.setBackground(Color.WHITE);
         multiplayer.setFont(font);
         multiplayer.setBackground(Color.WHITE);
-        settings.setFont(font);
-        settings.setBackground(Color.WHITE);
+        teachingPanel.setFont(font);
+        teachingPanel.setBackground(Color.WHITE);
         account.setFont(font);
         account.setBackground(Color.WHITE);
         exit.setFont(font);
@@ -46,8 +46,8 @@ public class MainMenu extends JPanel {
         account.addActionListener(listener);
     }
 
-    public void setSettingsListener(ActionListener listener) {
-        settings.addActionListener(listener);
+    public void setTeachingPanelListener(ActionListener listener) {
+        teachingPanel.addActionListener(listener);
     }
 
     public void updateSign(boolean signed) {

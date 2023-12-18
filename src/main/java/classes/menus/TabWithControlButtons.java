@@ -32,7 +32,7 @@ public class TabWithControlButtons extends JPanel {
 
     @Override
     public int getWidth() {
-        return 600;
+        return 480;
     }
 
     @Override

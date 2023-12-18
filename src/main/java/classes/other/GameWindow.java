@@ -21,7 +21,7 @@ public class GameWindow {
     private final StartPanel startPanelPanel = new StartPanel();
     private final RestartPanel restartPanelSinglePlayer = new RestartPanel();
     private final RestartPanel restartMultiplayerPanel = new RestartPanel();
-    private final ControlTeachingPanel controlTeachingPanel = new ControlTeachingPanel();
+    private final TabWithControlButtons tabWithControlButtons = new TabWithControlButtons();
 
     private final SignInPanel signInPanel = new SignInPanel();
     private final SignedPanel signedPanel = new SignedPanel();
@@ -153,7 +153,7 @@ public class GameWindow {
         });
 
         mainPanel.setExitListener(e -> accountActions.cleanAccount());
-        mainPanel.setTeachingPanelListener(e -> changePanel(mainPanel, controlTeachingPanel));
+        mainPanel.setTeachingPanelListener(e -> changePanel(mainPanel, tabWithControlButtons));
         mainPanel.setAccountListener(e -> openAccountMenu());
     }
 
@@ -196,7 +196,7 @@ public class GameWindow {
     }
 
     public void addTeachControlPanelListeners() {
-        controlTeachingPanel.setBackListener(e -> changePanel(controlTeachingPanel, mainPanel));
+        tabWithControlButtons.setBackListener(e -> changePanel(tabWithControlButtons, mainPanel));
     }
 
     public void addRestartPanelListener() {

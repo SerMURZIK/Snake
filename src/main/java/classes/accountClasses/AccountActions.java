@@ -3,11 +3,11 @@ package classes.accountClasses;
 import classes.accountClasses.json.CurrentAccountJsonWriter;
 import classes.accountClasses.json.JsonReader;
 import classes.accountClasses.json.SaveSnakeJsonWriter;
-import classes.menus.MainMenu;
+import classes.menus.MainPanel;
 import classes.menus.SignInPanel;
 import classes.menus.SignUpPanel;
 import classes.menus.SignedPanel;
-import classes.menus.gameMenues.SinglePlayerPanel;
+import classes.menus.gamePanels.SinglePlayerPanel;
 import classes.snakeClasses.blockClasses.Block;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class AccountActions {
 
     private boolean rememberMe; //for persons who signed for current session (isSignedForCurrentSession)
     private final JFrame window;
-    private final MainMenu mainMenu;
+    private final MainPanel mainPanel;
     private final SignInPanel signInPanel;
     private CurrentAccount currentAccount;
     private final SinglePlayerPanel gamePanel;
@@ -34,14 +34,14 @@ public class AccountActions {
     private final SignedPanel signedPanel;
 
     public AccountActions(JFrame window,
-                          MainMenu mainMenu,
+                          MainPanel mainPanel,
                           SignInPanel signInPanel,
                           CurrentAccount currentAccount,
                           SinglePlayerPanel gamePanel,
                           SignUpPanel signUpPanel,
                           SignedPanel signedPanel) {
         this.window = window;
-        this.mainMenu = mainMenu;
+        this.mainPanel = mainPanel;
         this.signInPanel = signInPanel;
         this.currentAccount = currentAccount;
         this.gamePanel = gamePanel;
@@ -58,7 +58,7 @@ public class AccountActions {
                 writeCurrentAccountJson(signInPanel.getLogin(), signInPanel.getPassword(), signInPanel.getSigned());
 
                 getAllInfoFromJson();
-                changePanel(signInPanel, mainMenu);
+                changePanel(signInPanel, mainPanel);
 
                 signInPanel.removeWrongMessage();
                 signInPanel.cleanFields();
@@ -83,7 +83,7 @@ public class AccountActions {
         rememberMe = true;
         getAllInfoFromJson();
         readAccountFromJson();
-        changePanel(signUpPanel, mainMenu);
+        changePanel(signUpPanel, mainPanel);
         signUpPanel.cleanFields();
     }
 
@@ -162,11 +162,11 @@ public class AccountActions {
         getAllInfoFromJson();
 
         rememberMe = false;
-        changePanel(signedPanel, mainMenu);
+        changePanel(signedPanel, mainPanel);
     }
 
     public void updateExitListener() {
-        mainMenu.updateSign(currentAccount.getSigned());
+        mainPanel.updateSign(currentAccount.getSigned());
     }
 
     public void changePanel(JPanel removePanel, JPanel newPanel) {

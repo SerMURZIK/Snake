@@ -1,4 +1,4 @@
-package classes.menus.gameMenues;
+package classes.menus.gamePanels;
 
 import classes.apples.Apple;
 import classes.snakeClasses.Direction;

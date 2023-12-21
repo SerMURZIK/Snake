@@ -3,8 +3,8 @@ package classes.other;
 import classes.accountClasses.AccountActions;
 import classes.accountClasses.CurrentAccount;
 import classes.menus.*;
-import classes.menus.gameMenues.MultiplayerPanel;
-import classes.menus.gameMenues.SinglePlayerPanel;
+import classes.menus.gamePanels.MultiplayerPanel;
+import classes.menus.gamePanels.SinglePlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,11 @@ public class GameWindow {
     private SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
     private MultiplayerPanel multiplayer = new MultiplayerPanel();
 
-    private final MainMenu mainMenu = new MainMenu();
-    private final StartMenu startMenuPanel = new StartMenu();
-    private final SettingsPanel settingsPanel = new SettingsPanel();
+    private final MainPanel mainPanel = new MainPanel();
+    private final StartPanel startPanelPanel = new StartPanel();
     private final RestartPanel restartPanelSinglePlayer = new RestartPanel();
     private final RestartPanel restartMultiplayerPanel = new RestartPanel();
+    private final TabWithControlButtons tabWithControlButtons = new TabWithControlButtons();
 
     private final SignInPanel signInPanel = new SignInPanel();
     private final SignedPanel signedPanel = new SignedPanel();
@@ -30,7 +30,7 @@ public class GameWindow {
     private CurrentAccount currentAccount = new CurrentAccount();
     private final AccountActions accountActions = new AccountActions(
             window,
-            mainMenu,
+            mainPanel,
             signInPanel,
             currentAccount,
             singlePlayer,
@@ -62,23 +62,23 @@ public class GameWindow {
 
         window.setResizable(false);
         window.setUndecorated(true);
-        window.setSize(new Dimension(startMenuPanel.getWidth(), startMenuPanel.getHeight()));
+        window.setSize(new Dimension(startPanelPanel.getWidth(), startPanelPanel.getHeight()));
         window.setName("Snake");
         window.setLocationRelativeTo(null);
-        window.add(startMenuPanel);
+        window.add(startPanelPanel);
         window.setVisible(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         singlePlayer.setExitListener(e -> openSinglePlayerMainMenu());
         multiplayer.setExitListener(e -> openMultiplayerMainMenu());
 
-        startMenuPanel.setStartListener(e -> {
-            changePanel(startMenuPanel, mainMenu);
+        startPanelPanel.setStartListener(e -> {
+            changePanel(startPanelPanel, mainPanel);
             accountActions.getAllInfoFromJson();
         });
 
         addMainMenuListeners();
-        addSettingsPanelListeners();
+        addTeachControlPanelListeners();
         addSignedPanelListeners();
         addSignInPanelListeners();
         addSignUpPanelListeners();
@@ -90,8 +90,8 @@ public class GameWindow {
         singlePlayer.playSound(false);
         window.remove(singlePlayer);
         if (singlePlayer.isAlive()) {
-            window.add(mainMenu);
-            window.setSize(new Dimension(mainMenu.getWidth(), mainMenu.getHeight()));
+            window.add(mainPanel);
+            window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
         } else {
             window.add(restartPanelSinglePlayer);
             window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
@@ -105,8 +105,8 @@ public class GameWindow {
         multiplayer.playSound(false);
         window.remove(multiplayer);
         if (multiplayer.isAlive()) {
-            window.add(mainMenu);
-            window.setSize(new Dimension(mainMenu.getWidth(), mainMenu.getHeight()));
+            window.add(mainPanel);
+            window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
         } else {
             window.add(restartMultiplayerPanel);
             window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
@@ -116,7 +116,7 @@ public class GameWindow {
     }
 
     public void openAccountMenu() {
-        window.remove(mainMenu);
+        window.remove(mainPanel);
         currentAccount = accountActions.getCurrentAccount();
         if (currentAccount.getSigned() || accountActions.getRememberMe()) {
             window.add(signedPanel);
@@ -138,23 +138,23 @@ public class GameWindow {
     }
 
     public void addMainMenuListeners() {
-        mainMenu.setStartListener(e -> {
-            changePanel(mainMenu, singlePlayer);
+        mainPanel.setStartListener(e -> {
+            changePanel(mainPanel, singlePlayer);
             singlePlayer.start();
             singlePlayer.playSound(true);
             singlePlayer.requestFocus();
         });
 
-        mainMenu.setMultiplayerListener(e -> {
-            changePanel(mainMenu, multiplayer);
+        mainPanel.setMultiplayerListener(e -> {
+            changePanel(mainPanel, multiplayer);
             multiplayer.start();
             multiplayer.playSound(true);
             multiplayer.requestFocus();
         });
 
-        mainMenu.setExitListener(e -> accountActions.cleanAccount());
-        mainMenu.setSettingsListener(e -> changePanel(mainMenu, settingsPanel));
-        mainMenu.setAccountListener(e -> openAccountMenu());
+        mainPanel.setExitListener(e -> accountActions.cleanAccount());
+        mainPanel.setTeachingPanelListener(e -> changePanel(mainPanel, tabWithControlButtons));
+        mainPanel.setAccountListener(e -> openAccountMenu());
     }
 
     public void addSignedPanelListeners() {
@@ -162,17 +162,17 @@ public class GameWindow {
 
         signedPanel.setLoadListener(e -> accountActions.getAllInfoFromJson());
 
-        signedPanel.setBackListener(e -> changePanel(signedPanel, mainMenu));
+        signedPanel.setBackListener(e -> changePanel(signedPanel, mainPanel));
 
         signedPanel.setExitFromAccountListener(e -> {
             accountActions.cleanAccount();
-            changePanel(signedPanel, mainMenu);
+            changePanel(signedPanel, mainPanel);
         });
     }
 
     public void addSignInPanelListeners() {
         signInPanel.setBackListener(e -> {
-            changePanel(signInPanel, mainMenu);
+            changePanel(signInPanel, mainPanel);
             signInPanel.removeWrongMessage();
             signInPanel.cleanFields();
         });
@@ -195,8 +195,8 @@ public class GameWindow {
         signUpPanel.setEnterListener(e -> accountActions.writeNewAccount());
     }
 
-    public void addSettingsPanelListeners() {
-        settingsPanel.setBackListener(e -> changePanel(settingsPanel, mainMenu));
+    public void addTeachControlPanelListeners() {
+        tabWithControlButtons.setBackListener(e -> changePanel(tabWithControlButtons, mainPanel));
     }
 
     public void addRestartPanelListener() {

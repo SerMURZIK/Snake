@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class StartMenu extends JPanel {
+public class StartPanel extends JPanel {
     private final int width = 800;
     private final int height = 600;
     private final JButton start = new JButton("Начать");
 
-    public StartMenu() {
+    public StartPanel() {
         JLabel fon = new JLabel(new ImageIcon("src/main/resources/files/sprites/other/fon.png"));
         JButton closeGame = new JButton("Закрыть игру");
         Font font = new Font("Calibri", Font.BOLD, 20);

@@ -48,7 +48,7 @@ public abstract class GamePanel extends JPanel implements ActionListener {
         return isAlive;
     }
 
-    public void loadLastSave() {
+    public void continueGame() {
         isAlive = true;
         start();
         addKeyListener(listener);

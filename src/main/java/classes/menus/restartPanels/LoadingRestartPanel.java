@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class SinglePlayerRestartPanel extends RestartPanel{
-    private final JButton load = new JButton("load");
+public class LoadingRestartPanel extends RestartPanel {
+    private final JButton load = new JButton("Load");
 
-    public SinglePlayerRestartPanel() {
+    public LoadingRestartPanel() {
         super();
 
         add(load, 1);

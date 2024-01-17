@@ -9,7 +9,7 @@ public class RestartPanel extends JPanel {
     protected final Font font = new Font("Calibri", Font.BOLD, 20);
 
     public RestartPanel() {
-        JButton exit = new JButton("quit");
+        JButton exit = new JButton("Quit");
 
         add(restart);
         add(exit);

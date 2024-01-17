@@ -3,10 +3,11 @@ package classes.other;
 import classes.accountClasses.AccountActions;
 import classes.accountClasses.CurrentAccount;
 import classes.menus.*;
+import classes.menus.gamePanels.GamePanel;
 import classes.menus.gamePanels.MultiplayerPanel;
 import classes.menus.gamePanels.SinglePlayerPanel;
 import classes.menus.restartPanels.RestartPanel;
-import classes.menus.restartPanels.SinglePlayerRestartPanel;
+import classes.menus.restartPanels.LoadingRestartPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +22,8 @@ public class GameWindow {
 
     private final MainPanel mainPanel = new MainPanel();
     private final StartPanel startPanelPanel = new StartPanel();
-    private final SinglePlayerRestartPanel restartPanelSinglePlayer = new SinglePlayerRestartPanel();
-    private final RestartPanel restartMultiplayerPanel = new RestartPanel();
+    private final LoadingRestartPanel loadingRestartPanel = new LoadingRestartPanel();
+    private final RestartPanel restartPanel = new RestartPanel();
     private final TabWithControlButtons tabWithControlButtons = new TabWithControlButtons();
 
     private final SignInPanel signInPanel = new SignInPanel();
@@ -74,7 +75,7 @@ public class GameWindow {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if (key == KeyEvent.VK_ESCAPE) {
-                    openMultiplayerMainMenu();
+                    openGamePanel(multiplayer, restartPanel);
                 }
             }
         });
@@ -86,44 +87,29 @@ public class GameWindow {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 if (key == KeyEvent.VK_ESCAPE) {
-                    openSinglePlayerMainMenu();
+                    openGamePanel(singlePlayer, loadingRestartPanel);
                 }
             }
         });
     }
 
     private void setOpeningListeners() {
-        singlePlayer.setExitListener(e -> openSinglePlayerMainMenu());
-        multiplayer.setExitListener(e -> openMultiplayerMainMenu());
+        singlePlayer.setExitListener(e -> openGamePanel(singlePlayer, loadingRestartPanel));
+        multiplayer.setExitListener(e -> openGamePanel(multiplayer, restartPanel));
         addSinglePlayerKeyListener();
         addMultiplayerKeyListener();
     }
 
-    public void openSinglePlayerMainMenu() {
-        singlePlayer.stop();
-        singlePlayer.playSound(false);
-        window.remove(singlePlayer);
-        if (singlePlayer.isAlive()) {
+    public void openGamePanel(GamePanel gamePanel, RestartPanel restartPanel) {
+        gamePanel.stop();
+        gamePanel.playSound(false);
+        window.remove(gamePanel);
+        if (gamePanel.isAlive()) {
             window.add(mainPanel);
             window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
         } else {
-            window.add(restartPanelSinglePlayer);
-            window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
-        }
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-    }
-
-    public void openMultiplayerMainMenu() {
-        multiplayer.stop();
-        multiplayer.playSound(false);
-        window.remove(multiplayer);
-        if (multiplayer.isAlive()) {
-            window.add(mainPanel);
-            window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
-        } else {
-            window.add(restartMultiplayerPanel);
-            window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
+            window.add(restartPanel);
+            window.setSize(new Dimension(restartPanel.getWidth(), restartPanel.getHeight()));
         }
         window.setLocationRelativeTo(null);
         window.setVisible(true);
@@ -214,24 +200,24 @@ public class GameWindow {
     }
 
     public void addRestartPanelListener() {
-        restartPanelSinglePlayer.setRestartListener(e -> {
+        loadingRestartPanel.setRestartListener(e -> {
             singlePlayer = new SinglePlayerPanel();
-            changePanel(restartPanelSinglePlayer, singlePlayer);
+            changePanel(loadingRestartPanel, singlePlayer);
             setOpeningListeners();
             singlePlayer.continueGame();
             singlePlayer.requestFocus();
         });
 
-        restartPanelSinglePlayer.setLoadListener(e -> {
+        loadingRestartPanel.setLoadListener(e -> {
             accountActions.getAllInfoFromJson();
-            changePanel(restartPanelSinglePlayer, singlePlayer);
+            changePanel(loadingRestartPanel, singlePlayer);
             singlePlayer.continueGame();
             singlePlayer.requestFocus();
         });
 
-        restartMultiplayerPanel.setRestartListener(e -> {
+        restartPanel.setRestartListener(e -> {
             multiplayer = new MultiplayerPanel();
-            changePanel(restartMultiplayerPanel, multiplayer);
+            changePanel(restartPanel, multiplayer);
             setOpeningListeners();
             singlePlayer.continueGame();
             multiplayer.requestFocus();

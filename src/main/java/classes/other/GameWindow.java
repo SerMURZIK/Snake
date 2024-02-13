@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
     private final JFrame window = new JFrame();
 
-    private SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
+    private final SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
     private MultiplayerPanel multiplayer = new MultiplayerPanel();
 
     private final MainPanel mainPanel = new MainPanel();
@@ -201,25 +201,22 @@ public class GameWindow {
 
     public void addRestartPanelListener() {
         loadingRestartPanel.setRestartListener(e -> {
-            singlePlayer = new SinglePlayerPanel();
+            singlePlayer.restart();
             changePanel(loadingRestartPanel, singlePlayer);
             setOpeningListeners();
-            singlePlayer.continueGame();
             singlePlayer.requestFocus();
         });
 
         loadingRestartPanel.setLoadListener(e -> {
             accountActions.getAllInfoFromJson();
             changePanel(loadingRestartPanel, singlePlayer);
-            singlePlayer.continueGame();
             singlePlayer.requestFocus();
         });
 
         restartPanel.setRestartListener(e -> {
-            multiplayer = new MultiplayerPanel();
+            multiplayer.restart();
             changePanel(restartPanel, multiplayer);
             setOpeningListeners();
-            singlePlayer.continueGame();
             multiplayer.requestFocus();
         });
 

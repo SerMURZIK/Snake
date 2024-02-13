@@ -10,20 +10,20 @@ import static classes.snakeClasses.blockClasses.Block.BODY_SIZE;
 
 public class Snake {
     private short score = 0;
-    protected final short startSpeed = 100;
+    public static final short startSpeed = 100;
     private short speed = startSpeed;
     private Head head;
     private Block tail;
 
     public Snake(Direction direction, int initialX, int initialY) {
-        createSnake(initialX, initialY, direction);
+        createSnake(direction, initialX, initialY);
     }
 
-    public void createSnake(int initialX, int initialY, Direction direction) {
+    public void createSnake(Direction direction, int initialX, int initialY) {
         head = new Head(initialX, initialY);
         setDirection(direction);
         Block previous = this.head;
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 4; i++) {
             Block next = switch (getDirection()) {
                 case LEFT -> new Body(initialX + i * BODY_SIZE, initialY);
                 case UP -> new Body(initialX, initialY + i * BODY_SIZE);
@@ -56,14 +56,6 @@ public class Snake {
 
     public Block getTail() {
         return tail;
-    }
-
-    public void setTail(Block tail) {
-        this.tail = tail;
-    }
-
-    public void setHead(Head head) {
-        this.head = head;
     }
 
     public boolean checkDeath(int windowWidth, int windowHeight) {

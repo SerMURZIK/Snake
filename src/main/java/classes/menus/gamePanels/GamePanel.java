@@ -48,12 +48,6 @@ public abstract class GamePanel extends JPanel implements ActionListener {
         return isAlive;
     }
 
-    public void continueGame() {
-        isAlive = true;
-        start();
-        addKeyListener(listener);
-    }
-
     public void setExitListener(ActionListener listener) {
         exitToMenu.addActionListener(listener);
     }
@@ -91,4 +85,6 @@ public abstract class GamePanel extends JPanel implements ActionListener {
     }
 
     public abstract KeyListener setListener();
+
+    public abstract void restart();
 }

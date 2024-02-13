@@ -57,12 +57,12 @@ public class AccountActions {
             if (signInPanel.getPassword().equals(saveSnakeClass.getPassword())) {
                 writeCurrentAccountJson(signInPanel.getLogin(), signInPanel.getPassword(), signInPanel.getSigned());
 
+                rememberMe = true;
                 getAllInfoFromJson();
                 changePanel(signInPanel, mainPanel);
 
                 signInPanel.removeWrongMessage();
                 signInPanel.cleanFields();
-                rememberMe = true;
             } else {
                 signInPanel.showWrongMessage();
             }

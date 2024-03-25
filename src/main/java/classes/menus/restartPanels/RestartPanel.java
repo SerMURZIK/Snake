@@ -1,4 +1,4 @@
-package classes.menus;
+package classes.menus.restartPanels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,21 +6,16 @@ import java.awt.event.ActionListener;
 
 public class RestartPanel extends JPanel {
     private final JButton restart = new JButton("Restart");
-    private final JButton load = new JButton("load");
+    protected final Font font = new Font("Calibri", Font.BOLD, 20);
 
     public RestartPanel() {
-        JButton exit = new JButton("quit");
-        Font font = new Font("Calibri", Font.BOLD, 20);
+        JButton exit = new JButton("Quit");
 
         add(restart);
-        add(load);
         add(exit);
 
         restart.setFont(font);
         restart.setBackground(Color.WHITE);
-
-        load.setFont(font);
-        load.setBackground(Color.WHITE);
 
         exit.setFont(font);
         exit.setBackground(Color.WHITE);
@@ -30,10 +25,6 @@ public class RestartPanel extends JPanel {
 
     public void setRestartListener(ActionListener listener) {
         restart.addActionListener(listener);
-    }
-
-    public void setLoadListener(ActionListener listener) {
-        load.addActionListener(listener);
     }
 
     @Override

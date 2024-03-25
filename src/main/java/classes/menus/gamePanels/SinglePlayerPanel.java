@@ -17,8 +17,8 @@ import java.util.List;
 public class SinglePlayerPanel extends GamePanel {
     private final Snake snake = new Snake(
             Direction.RIGHT,
-            GamePanel.GAME_PANEL_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
-            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
+            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer snakeTimer = new Timer(snake.getSpeed(), this);
 

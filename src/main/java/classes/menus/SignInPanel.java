@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class SignInPanel extends JPanel {
+public class SignInPanel extends SizePanel {
     private final JButton signUp = new JButton("Sign up");
     private final JButton back = new JButton("Back");
     private final JButton enterButt = new JButton("Enter");
@@ -18,7 +18,7 @@ public class SignInPanel extends JPanel {
     private final JLabel warningMessage = new JLabel("Wrong login or password");
 
     public SignInPanel() {
-        Font font = new Font("Calibri", Font.BOLD, 20);
+        Font font = new Font("Calibri", Font.BOLD, 30);
 
         setLayout(null);
         add(loginField);
@@ -28,34 +28,38 @@ public class SignInPanel extends JPanel {
         add(signUp);
         add(back);
 
-        loginField.setBounds(10, 10, 210, 50);
+        int startY = 250, buttonWidth = 500, buttonHeight = 50,
+                x = getWidth() / 2 - buttonWidth / 2,
+                indentation = 15;
+
+        loginField.setBounds(x, startY, buttonWidth, buttonHeight);
         loginField.setFont(font);
         loginField.setForeground(Color.BLACK);
         loginField.setPlaceholderForeground(Color.GRAY);
         loginField.setPlaceholder(loginPlaceHolderText);
 
-        passwordField.setBounds(10, 70, 210, 50);
+        passwordField.setBounds(x, indentation + buttonHeight + startY, buttonWidth, buttonHeight);
         passwordField.setFont(font);
         passwordField.setForeground(Color.BLACK);
         passwordField.setPlaceholderForeground(Color.GRAY);
         passwordField.setPlaceholder(passwordPlaceHolderText);
 
-        checkSignedBox.setBounds(10, 130, 210, 50);
+        checkSignedBox.setBounds(x, (indentation + buttonHeight) * 2 + startY, buttonWidth, buttonHeight);
         checkSignedBox.setFont(font);
 
-        enterButt.setBounds(10, 190, 100, 30);
+        enterButt.setBounds(x, (indentation + buttonHeight) * 3 + startY, buttonWidth, buttonHeight);
         enterButt.setFont(font);
         enterButt.setBackground(Color.WHITE);
 
-        signUp.setBounds(10, 230, 100, 30);
+        signUp.setBounds(x, (indentation + buttonHeight) * 4 + startY, buttonWidth, buttonHeight);
         signUp.setFont(font);
         signUp.setBackground(Color.WHITE);
 
-        back.setBounds(10, 270, 100, 30);
+        back.setBounds(x, (indentation + buttonHeight) * 5 + startY, buttonWidth, buttonHeight);
         back.setFont(font);
         back.setBackground(Color.WHITE);
 
-        warningMessage.setBounds(10, 310, 250, 30);
+        warningMessage.setBounds(x, (indentation + buttonHeight) * 6 + startY, buttonWidth, buttonHeight);
         warningMessage.setFont(font);
         warningMessage.setBackground(Color.WHITE);
     }
@@ -110,15 +114,5 @@ public class SignInPanel extends JPanel {
 
         passwordField.setText(null);
         passwordField.setPlaceholder(passwordPlaceHolderText);
-    }
-
-    @Override
-    public int getWidth() {
-        return 250;
-    }
-
-    @Override
-    public int getHeight() {
-        return 350;
     }
 }

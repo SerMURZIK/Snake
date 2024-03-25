@@ -18,7 +18,6 @@ public class GameWindow {
     private MultiplayerPanel multiplayer = new MultiplayerPanel();
 
     private final MainPanel mainPanel = new MainPanel();
-    private final StartPanel startPanelPanel = new StartPanel();
     private final RestartPanel restartPanelSinglePlayer = new RestartPanel();
     private final RestartPanel restartMultiplayerPanel = new RestartPanel();
     private final TabWithControlButtons tabWithControlButtons = new TabWithControlButtons();
@@ -43,8 +42,7 @@ public class GameWindow {
         singlePlayer.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                if (key == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     openSinglePlayerMainMenu();
                 }
             }
@@ -53,32 +51,26 @@ public class GameWindow {
         multiplayer.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                int key = e.getKeyCode();
-                if (key == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     openMultiplayerMainMenu();
                 }
             }
         });
 
-        window.setResizable(false);
-        window.setUndecorated(true);
-        window.setSize(new Dimension(startPanelPanel.getWidth(), startPanelPanel.getHeight()));
+        //window.setResizable(false);
+       // window.setUndecorated(true);
+        window.setSize(new Dimension(SizePanel.WINDOW_WIDTH, SizePanel.WINDOW_HEIGHT));
         window.setName("Snake");
         window.setLocationRelativeTo(null);
-        window.add(startPanelPanel);
+        window.add(mainPanel);
         window.setVisible(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         singlePlayer.setExitListener(e -> openSinglePlayerMainMenu());
         multiplayer.setExitListener(e -> openMultiplayerMainMenu());
 
-        startPanelPanel.setStartListener(e -> {
-            changePanel(startPanelPanel, mainPanel);
-            accountActions.getAllInfoFromJson();
-        });
-
         addMainMenuListeners();
-        addTeachControlPanelListeners();
+        addControlPanelListeners();
         addSignedPanelListeners();
         addSignInPanelListeners();
         addSignUpPanelListeners();
@@ -153,7 +145,10 @@ public class GameWindow {
         });
 
         mainPanel.setExitListener(e -> accountActions.cleanAccount());
-        mainPanel.setTeachingPanelListener(e -> changePanel(mainPanel, tabWithControlButtons));
+        mainPanel.setControlPanelListener(e -> {
+            changePanel(mainPanel, tabWithControlButtons);
+            window.repaint();
+        });
         mainPanel.setAccountListener(e -> openAccountMenu());
     }
 
@@ -195,8 +190,11 @@ public class GameWindow {
         signUpPanel.setEnterListener(e -> accountActions.writeNewAccount());
     }
 
-    public void addTeachControlPanelListeners() {
-        tabWithControlButtons.setBackListener(e -> changePanel(tabWithControlButtons, mainPanel));
+    public void addControlPanelListeners() {
+        tabWithControlButtons.setBackListener(e -> {
+            changePanel(tabWithControlButtons, mainPanel);
+            window.repaint();
+        });
     }
 
     public void addRestartPanelListener() {

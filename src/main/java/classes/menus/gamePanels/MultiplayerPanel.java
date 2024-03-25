@@ -16,13 +16,13 @@ import java.awt.event.KeyListener;
 public class MultiplayerPanel extends GamePanel {
     private final Snake yellowSnake = new Snake(
             Direction.LEFT,
-            GamePanel.GAME_PANEL_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
-            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            WINDOW_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
+            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Snake greenSnake = new Snake(
             Direction.RIGHT,
-            GamePanel.GAME_PANEL_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
-            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            WINDOW_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
+            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer yellowSnakeTimer = new Timer(yellowSnake.getSpeed(), this);
     private final Timer greenSnakeTimer = new Timer(greenSnake.getSpeed(), this);

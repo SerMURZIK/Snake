@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class TabWithControlButtons extends JPanel {
+public class TabWithControlButtons extends SizePanel {
     private final JButton back = new JButton("Back");
 
     public TabWithControlButtons() {
-        Font font = new Font("Calibri", Font.PLAIN, 20);
+        Font font = new Font("Calibri", Font.PLAIN, 80);
 
         JLabel teachingText = new JLabel("<html>Press <b>arrow keys</b> for moving in singleplayer<br>" +
                 "Press <b>WASD</b> and <b>arrow keys</b> for moving in multiplayer<br>" +
@@ -28,15 +28,5 @@ public class TabWithControlButtons extends JPanel {
 
     public void setBackListener(ActionListener listener) {
         back.addActionListener(listener);
-    }
-
-    @Override
-    public int getWidth() {
-        return 480;
-    }
-
-    @Override
-    public int getHeight() {
-        return 150;
     }
 }

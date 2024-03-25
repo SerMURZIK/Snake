@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class SignUpPanel extends JPanel {
+public class SignUpPanel extends SizePanel {
     private final JButton back = new JButton("Back");
     private final JButton enterButt = new JButton("Enter");
     private final CustomTextField loginField = new CustomTextField();
@@ -16,7 +16,7 @@ public class SignUpPanel extends JPanel {
     private final JCheckBox checkSignedBox = new JCheckBox("Remember me");
 
     public SignUpPanel() {
-        Font font = new Font("Calibri", Font.BOLD, 20);
+        Font font = new Font("Calibri", Font.BOLD, 30);
 
         setLayout(null);
         add(loginField);
@@ -25,26 +25,31 @@ public class SignUpPanel extends JPanel {
         add(enterButt);
         add(back);
 
-        loginField.setBounds(10, 10, 210, 50);
+
+        int startY = 250, buttonWidth = 500, buttonHeight = 50,
+                x = getWidth() / 2 - buttonWidth / 2,
+                indentation = 15;
+
+        loginField.setBounds(x, startY, buttonWidth, buttonHeight);
         loginField.setFont(font);
         loginField.setForeground(Color.BLACK);
         loginField.setPlaceholderForeground(Color.GRAY);
         loginField.setPlaceholder(loginPlaceHolderText);
 
-        passwordField.setBounds(10, 70, 210, 50);
+        passwordField.setBounds(x, indentation + buttonHeight + startY, buttonWidth, buttonHeight);
         passwordField.setFont(font);
         passwordField.setForeground(Color.BLACK);
         passwordField.setPlaceholderForeground(Color.GRAY);
         passwordField.setPlaceholder(passwordPlaceHolderText);
 
-        checkSignedBox.setBounds(10, 130, 210, 50);
+        checkSignedBox.setBounds(x, (indentation + buttonHeight) * 2 + startY, buttonWidth, buttonHeight);
         checkSignedBox.setFont(font);
 
-        enterButt.setBounds(10, 190, 130, 30);
+        enterButt.setBounds(x, (indentation + buttonHeight) * 3 + startY, buttonWidth, buttonHeight);
         enterButt.setFont(font);
         enterButt.setBackground(Color.WHITE);
 
-        back.setBounds(10, 230, 100, 30);
+        back.setBounds(x, (indentation + buttonHeight) * 4 + startY, buttonWidth, buttonHeight);
         back.setFont(font);
         back.setBackground(Color.WHITE);
     }
@@ -77,13 +82,4 @@ public class SignUpPanel extends JPanel {
         enterButt.addActionListener(listener);
     }
 
-    @Override
-    public int getWidth() {
-        return 251;
-    }
-
-    @Override
-    public int getHeight() {
-        return 300;
-    }
 }

@@ -4,34 +4,54 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainPanel extends JPanel {
-    private final JButton start = new JButton("Start");
+public class MainPanel extends FonPanel {
+    private final JButton start = new JButton("Single player");
     private final JButton multiplayer = new JButton("Multiplayer");
     private final JButton account = new JButton("Account");
-    private final JButton teachingPanel = new JButton("Control buttons");
+    private final JButton controlButtons = new JButton("Control buttons");
     private final JButton exit = new JButton("Exit");
     private ActionListener exitListener;
 
     public MainPanel() {
-        Font font = new Font("Calibri", Font.BOLD, 20);
+        Font font = new Font("Calibri", Font.PLAIN, 50);
         exit.addActionListener(e -> System.exit(0));
 
-        add(start);
-        add(multiplayer);
-        add(teachingPanel);
-        add(account);
-        add(exit);
+        add(start, 0);
+        add(multiplayer, 1);
+        add(controlButtons, 2);
+        add(account, 3);
+        add(exit, 4);
 
+        int buttonWidth = 500, buttonHeight = 100, startPositionX = 800, startPositionY = 550, indentation = 30;
         start.setFont(font);
-        start.setBackground(Color.WHITE);
+        start.setBackground(color);
+        start.setBounds(startPositionX,
+                550,
+                buttonWidth, buttonHeight);
+
         multiplayer.setFont(font);
-        multiplayer.setBackground(Color.WHITE);
-        teachingPanel.setFont(font);
-        teachingPanel.setBackground(Color.WHITE);
+        multiplayer.setBackground(color);
+        multiplayer.setBounds(startPositionX + buttonWidth + indentation,
+                startPositionY,
+                buttonWidth, buttonHeight);
+
+        controlButtons.setFont(font);
+        controlButtons.setBackground(color);
+        controlButtons.setBounds(startPositionX,
+                startPositionY + buttonHeight + indentation,
+                buttonWidth, buttonHeight);
+
         account.setFont(font);
-        account.setBackground(Color.WHITE);
+        account.setBackground(color);
+        account.setBounds(startPositionX + buttonWidth + indentation,
+                startPositionY + buttonHeight + indentation,
+                buttonWidth, buttonHeight);
+
         exit.setFont(font);
-        exit.setBackground(Color.WHITE);
+        exit.setBackground(Color.CYAN);
+        exit.setBounds(startPositionX,
+                startPositionY + (buttonHeight + indentation) * 2,
+                buttonWidth, buttonHeight);
     }
 
     public void setStartListener(ActionListener listener) {
@@ -46,8 +66,8 @@ public class MainPanel extends JPanel {
         account.addActionListener(listener);
     }
 
-    public void setTeachingPanelListener(ActionListener listener) {
-        teachingPanel.addActionListener(listener);
+    public void setControlPanelListener(ActionListener listener) {
+        controlButtons.addActionListener(listener);
     }
 
     public void updateSign(boolean signed) {
@@ -60,15 +80,5 @@ public class MainPanel extends JPanel {
 
     public void setExitListener(ActionListener listener) {
         exitListener = listener;
-    }
-
-    @Override
-    public int getWidth() {
-        return 170;
-    }
-
-    @Override
-    public int getHeight() {
-        return 300;
     }
 }

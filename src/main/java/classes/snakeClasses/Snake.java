@@ -10,16 +10,16 @@ import static classes.snakeClasses.blockClasses.Block.BODY_SIZE;
 
 public class Snake {
     private short score = 0;
-    protected final short startSpeed = 100;
+    public static final short startSpeed = 100;
     private short speed = startSpeed;
     private Head head;
     private Block tail;
 
     public Snake(Direction direction, int initialX, int initialY) {
-        createSnake(initialX, initialY, direction);
+        createSnake(direction, initialX, initialY);
     }
 
-    public void createSnake(int initialX, int initialY, Direction direction) {
+    public void createSnake(Direction direction, int initialX, int initialY) {
         head = new Head(initialX, initialY);
         setDirection(direction);
         Block previous = this.head;

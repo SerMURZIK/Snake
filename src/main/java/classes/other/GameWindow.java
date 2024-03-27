@@ -57,8 +57,8 @@ public class GameWindow {
             }
         });
 
-        //window.setResizable(false);
-       // window.setUndecorated(true);
+        window.setResizable(false);
+        window.setUndecorated(true);
         window.setSize(new Dimension(SizePanel.WINDOW_WIDTH, SizePanel.WINDOW_HEIGHT));
         window.setName("Snake");
         window.setLocationRelativeTo(null);

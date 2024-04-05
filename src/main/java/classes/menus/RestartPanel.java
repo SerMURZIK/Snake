@@ -8,13 +8,15 @@ public class RestartPanel extends SizePanel {
     private final JButton restart = new JButton("Restart");
     private final JButton load = new JButton("Load");
 
-    public RestartPanel() {
+    public RestartPanel(boolean hasLoadButt) {
         JButton exit = new JButton("Quit");
         Font font = new Font("Calibri", Font.PLAIN, 50);
 
         setLayout(null);
         add(restart);
-        add(load);
+        if (hasLoadButt) {
+            add(load);
+        }
         add(exit);
 
         int buttonWidth = 300, buttonHeight = 100, indentation = 50,
@@ -24,13 +26,15 @@ public class RestartPanel extends SizePanel {
         restart.setBackground(Color.WHITE);
         restart.setBounds(x, startY, buttonWidth, buttonHeight);
 
-        load.setFont(font);
-        load.setBackground(Color.WHITE);
-        load.setBounds(x, indentation + buttonHeight + startY, buttonWidth, buttonHeight);
+        if (hasLoadButt) {
+            load.setFont(font);
+            load.setBackground(Color.WHITE);
+            load.setBounds(x, indentation + buttonHeight + startY, buttonWidth, buttonHeight);
 
+        }
         exit.setFont(font);
         exit.setBackground(Color.WHITE);
-        exit.setBounds(x, (indentation + buttonHeight) * 2 + startY, buttonWidth, buttonHeight);
+        exit.setBounds(x, (indentation + buttonHeight) * (hasLoadButt ? 2 : 1) + startY, buttonWidth, buttonHeight);
 
         exit.addActionListener(e -> System.exit(0));
     }

@@ -16,9 +16,9 @@ import java.util.List;
 
 public class SinglePlayerPanel extends GamePanel {
     private final Snake snake = new Snake(
-            Direction.RIGHT,
-            WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
-            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            Direction.LEFT,
+            GamePanel.GAME_PANEL_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
+            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer snakeTimer = new Timer(snake.getSpeed(), this);
 
@@ -94,18 +94,25 @@ public class SinglePlayerPanel extends GamePanel {
     }
 
     @Override
+    public void restart() {
+        isAlive = true;
+        snake.createSnake(Direction.LEFT,
+                GamePanel.GAME_PANEL_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
+                GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+        snake.setScore((short) 0);
+        snake.setSpeed(Snake.startSpeed);
+
+        start();
+        checkApple(applesList);
+        setListener();
+    }
+
+    @Override
     public KeyListener setListener() {
         return new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if (key == KeyEvent.VK_CONTROL) {
-                    if (snakeTimer.isRunning()) {
-                        stop();
-                    } else {
-                        start();
-                    }
-                }
                 switch (key) {
                     case KeyEvent.VK_UP:
                         if (!snake.getDirection().equals(Direction.DOWN)) {
@@ -127,7 +134,13 @@ public class SinglePlayerPanel extends GamePanel {
                             snake.getSnake().getHead().setDirection(Direction.RIGHT);
                         }
                         break;
-                    case KeyEvent.VK_Q:
+                    case KeyEvent.VK_CONTROL:
+                        if (snakeTimer.isRunning()) {
+                            stop();
+                        } else {
+                            start();
+                        }
+                        break;
                 }
             }
         };

@@ -3,6 +3,7 @@ package classes.other;
 import classes.accountClasses.AccountActions;
 import classes.accountClasses.CurrentAccount;
 import classes.menus.*;
+import classes.menus.gamePanels.GamePanel;
 import classes.menus.gamePanels.MultiplayerPanel;
 import classes.menus.gamePanels.SinglePlayerPanel;
 
@@ -14,12 +15,12 @@ import java.awt.event.KeyEvent;
 public class GameWindow {
     private final JFrame window = new JFrame();
 
-    private SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
-    private MultiplayerPanel multiplayer = new MultiplayerPanel();
+    private final SinglePlayerPanel singlePlayer = new SinglePlayerPanel();
+    private final MultiplayerPanel multiplayer = new MultiplayerPanel();
 
     private final MainPanel mainPanel = new MainPanel();
-    private final RestartPanel restartPanelSinglePlayer = new RestartPanel();
-    private final RestartPanel restartMultiplayerPanel = new RestartPanel();
+    private final RestartPanel loadingRestartPanel = new RestartPanel(true);
+    private final RestartPanel nonLoadingRestartPanel = new RestartPanel(false);
     private final TabWithControlButtons tabWithControlButtons = new TabWithControlButtons();
 
     private final SignInPanel signInPanel = new SignInPanel();
@@ -39,72 +40,71 @@ public class GameWindow {
     public GameWindow() {
         accountActions.readAccountFromJson();
 
-        singlePlayer.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    openSinglePlayerMainMenu();
-                }
-            }
-        });
-
-        multiplayer.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    openMultiplayerMainMenu();
-                }
-            }
-        });
+        addSinglePlayerKeyListener();
+        addMultiplayerKeyListener();
 
         window.setResizable(false);
         window.setUndecorated(true);
-        window.setSize(new Dimension(SizePanel.WINDOW_WIDTH, SizePanel.WINDOW_HEIGHT));
+        window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
         window.setName("Snake");
         window.setLocationRelativeTo(null);
         window.add(mainPanel);
         window.setVisible(true);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        singlePlayer.setExitListener(e -> openSinglePlayerMainMenu());
-        multiplayer.setExitListener(e -> openMultiplayerMainMenu());
-
         addMainMenuListeners();
-        addControlPanelListeners();
+        addTeachControlPanelListeners();
         addSignedPanelListeners();
         addSignInPanelListeners();
         addSignUpPanelListeners();
         addRestartPanelListener();
     }
 
-    public void openSinglePlayerMainMenu() {
-        singlePlayer.stop();
-        singlePlayer.playSound(false);
-        window.remove(singlePlayer);
-        if (singlePlayer.isAlive()) {
-            window.add(mainPanel);
-            window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
-        } else {
-            window.add(restartPanelSinglePlayer);
-            window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
-        }
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
+    private void addMultiplayerKeyListener() {
+        multiplayer.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ESCAPE) {
+                    openGamePanel(multiplayer, nonLoadingRestartPanel);
+                }
+            }
+        });
     }
 
-    public void openMultiplayerMainMenu() {
-        multiplayer.stop();
-        multiplayer.playSound(false);
-        window.remove(multiplayer);
-        if (multiplayer.isAlive()) {
+    private void addSinglePlayerKeyListener() {
+        singlePlayer.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == KeyEvent.VK_ESCAPE) {
+                    openGamePanel(singlePlayer, loadingRestartPanel);
+                }
+            }
+        });
+    }
+
+    private void setOpeningListeners() {
+        singlePlayer.setExitListener(e -> openGamePanel(singlePlayer, loadingRestartPanel));
+        multiplayer.setExitListener(e -> openGamePanel(multiplayer, nonLoadingRestartPanel));
+        addSinglePlayerKeyListener();
+        addMultiplayerKeyListener();
+    }
+
+    public void openGamePanel(GamePanel gamePanel, RestartPanel restartPanel) {
+        gamePanel.stop();
+        gamePanel.playSound(false);
+        window.remove(gamePanel);
+        if (gamePanel.isAlive()) {
             window.add(mainPanel);
             window.setSize(new Dimension(mainPanel.getWidth(), mainPanel.getHeight()));
         } else {
-            window.add(restartMultiplayerPanel);
-            window.setSize(new Dimension(restartPanelSinglePlayer.getWidth(), restartPanelSinglePlayer.getHeight()));
+            window.add(restartPanel);
+            window.setSize(new Dimension(restartPanel.getWidth(), restartPanel.getHeight()));
         }
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        window.repaint();
     }
 
     public void openAccountMenu() {
@@ -119,6 +119,7 @@ public class GameWindow {
         }
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        window.repaint();
     }
 
     public void changePanel(JPanel removePanel, JPanel newPanel) {
@@ -127,6 +128,7 @@ public class GameWindow {
         window.setSize(new Dimension(newPanel.getWidth(), newPanel.getHeight()));
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        window.repaint();
     }
 
     public void addMainMenuListeners() {
@@ -145,10 +147,7 @@ public class GameWindow {
         });
 
         mainPanel.setExitListener(e -> accountActions.cleanAccount());
-        mainPanel.setControlPanelListener(e -> {
-            changePanel(mainPanel, tabWithControlButtons);
-            window.repaint();
-        });
+        mainPanel.setTabWithControlButtonsListener(e -> changePanel(mainPanel, tabWithControlButtons));
         mainPanel.setAccountListener(e -> openAccountMenu());
     }
 
@@ -190,38 +189,29 @@ public class GameWindow {
         signUpPanel.setEnterListener(e -> accountActions.writeNewAccount());
     }
 
-    public void addControlPanelListeners() {
-        tabWithControlButtons.setBackListener(e -> {
-            changePanel(tabWithControlButtons, mainPanel);
-            window.repaint();
-        });
+    public void addTeachControlPanelListeners() {
+        tabWithControlButtons.setBackListener(e -> changePanel(tabWithControlButtons, mainPanel));
     }
 
     public void addRestartPanelListener() {
-        restartPanelSinglePlayer.setRestartListener(e -> {
-            changePanel(restartPanelSinglePlayer, singlePlayer);
-            singlePlayer = new SinglePlayerPanel();
+        loadingRestartPanel.setRestartListener(e -> {
+            singlePlayer.restart();
+            changePanel(loadingRestartPanel, singlePlayer);
             singlePlayer.requestFocus();
         });
 
-        restartPanelSinglePlayer.setLoadListener(e -> {
+        loadingRestartPanel.setLoadListener(e -> {
             accountActions.getAllInfoFromJson();
-            changePanel(restartPanelSinglePlayer, singlePlayer);
-            singlePlayer.loadLastSave();
+            changePanel(loadingRestartPanel, singlePlayer);
             singlePlayer.requestFocus();
         });
 
-        restartMultiplayerPanel.setRestartListener(e -> {
-            changePanel(restartMultiplayerPanel, multiplayer);
-            multiplayer = new MultiplayerPanel();
+        nonLoadingRestartPanel.setRestartListener(e -> {
+            multiplayer.restart();
+            changePanel(nonLoadingRestartPanel, multiplayer);
             multiplayer.requestFocus();
         });
 
-        restartMultiplayerPanel.setLoadListener(e -> {
-            accountActions.getAllInfoFromJson();
-            changePanel(restartMultiplayerPanel, multiplayer);
-            multiplayer.loadLastSave();
-            multiplayer.requestFocus();
-        });
+        setOpeningListeners();
     }
 }

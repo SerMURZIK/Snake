@@ -3,7 +3,6 @@ package classes.menus.gamePanels;
 import classes.apples.Apple;
 import classes.apples.BonusApple;
 import classes.apples.RedApple;
-import classes.menus.SizePanel;
 import classes.other.Audio;
 
 import javax.swing.*;
@@ -13,14 +12,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-public abstract class GamePanel extends SizePanel implements ActionListener {
-    protected final RedApple standardApple = new RedApple(WINDOW_WIDTH, WINDOW_HEIGHT, 1,
+public abstract class GamePanel extends JPanel implements ActionListener {
+    public static int GAME_PANEL_WIDTH = 3300;
+    public static int GAME_PANEL_HEIGHT = 1200;
+
+    protected final RedApple standardApple = new RedApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 1,
             new ImageIcon("src/main/resources/files/sprites/apples/apple.png"));
 
-    protected final BonusApple bonusGoodApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, 2,
+    protected final BonusApple bonusGoodApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 2,
             new ImageIcon("src/main/resources/files/sprites/apples/goodApple.png"));
 
-    protected final BonusApple bonusBadApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, -3,
+    protected final BonusApple bonusBadApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, -3,
             new ImageIcon("src/main/resources/files/sprites/apples/badApple.png"));
 
     protected final Apple[] applesList = {standardApple, bonusBadApple, bonusGoodApple};
@@ -46,12 +48,6 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
         return isAlive;
     }
 
-    public void loadLastSave() {
-        isAlive = true;
-        start();
-        addKeyListener(listener);
-    }
-
     public void setExitListener(ActionListener listener) {
         exitToMenu.addActionListener(listener);
     }
@@ -70,6 +66,16 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
 
     public abstract void checkApple(Apple... apples);
 
+    @Override
+    public int getWidth() {
+        return 3300;
+    }
+
+    @Override
+    public int getHeight() {
+        return 1200;
+    }
+
     public void playSound(boolean play) {
         if (play) {
             audio.play();
@@ -79,4 +85,6 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     }
 
     public abstract KeyListener setListener();
+
+    public abstract void restart();
 }

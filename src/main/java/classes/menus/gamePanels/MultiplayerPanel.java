@@ -16,13 +16,13 @@ import java.awt.event.KeyListener;
 public class MultiplayerPanel extends GamePanel {
     private final Snake yellowSnake = new Snake(
             Direction.LEFT,
-            WINDOW_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
-            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            GamePanel.GAME_PANEL_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
+            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Snake greenSnake = new Snake(
             Direction.RIGHT,
-            WINDOW_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
-            WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            GamePanel.GAME_PANEL_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
+            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer yellowSnakeTimer = new Timer(yellowSnake.getSpeed(), this);
     private final Timer greenSnakeTimer = new Timer(greenSnake.getSpeed(), this);
@@ -105,13 +105,6 @@ public class MultiplayerPanel extends GamePanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
-                if (key == KeyEvent.VK_CONTROL) {
-                    if (yellowSnakeTimer.isRunning() || greenSnakeTimer.isRunning()) {
-                        stop();
-                    } else {
-                        start();
-                    }
-                }
                 switch (key) {
                     case KeyEvent.VK_UP:
                         if (!yellowSnake.getDirection().equals(Direction.DOWN)) {
@@ -153,9 +146,36 @@ public class MultiplayerPanel extends GamePanel {
                             greenSnake.getSnake().getHead().setDirection(Direction.RIGHT);
                         }
                         break;
+                    case KeyEvent.VK_CONTROL:
+                        if (yellowSnakeTimer.isRunning() || greenSnakeTimer.isRunning()) {
+                            stop();
+                        } else {
+                            start();
+                        }
+                        break;
                 }
             }
         };
+    }
+
+    @Override
+    public void restart() {
+        isAlive = true;
+        yellowSnake.createSnake(Direction.LEFT,
+                GamePanel.GAME_PANEL_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
+                GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+        yellowSnake.setScore((short) 0);
+        yellowSnake.setSpeed(Snake.startSpeed);
+
+        greenSnake.createSnake(Direction.RIGHT,
+                GamePanel.GAME_PANEL_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
+                GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+        greenSnake.setScore((short) 0);
+        greenSnake.setSpeed(Snake.startSpeed);
+
+        start();
+        checkApple(applesList);
+        setListener();
     }
 
     @Override

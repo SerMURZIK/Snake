@@ -66,7 +66,7 @@ public class MainPanel extends FonPanel {
         account.addActionListener(listener);
     }
 
-    public void setControlPanelListener(ActionListener listener) {
+    public void setTabWithControlButtonsListener(ActionListener listener) {
         controlButtons.addActionListener(listener);
     }
 

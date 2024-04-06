@@ -175,7 +175,7 @@ public class MultiplayerPanel extends GamePanel {
 
         start();
         checkApple(applesList);
-        setListener();
+        addKeyListener(setListener());
     }
 
     @Override

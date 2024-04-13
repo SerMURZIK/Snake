@@ -43,9 +43,17 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
         setBackground(new Color(54, 143, 255, 255));
         addKeyListener(listener);
     }
+
+    public void backListener() {
+        addKeyListener(setListener());
+    }
     
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     public void setExitListener(ActionListener listener) {

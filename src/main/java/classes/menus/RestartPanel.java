@@ -14,24 +14,22 @@ public class RestartPanel extends SizePanel {
 
         setLayout(null);
         add(restart);
-        if (hasLoadButt) {
-            add(load);
-        }
         add(exit);
 
         int buttonWidth = 300, buttonHeight = 100, indentation = 50,
                 x = getWidth() / 2 - buttonWidth / 2, startY = 300;
-
-        restart.setFont(font);
-        restart.setBackground(Color.WHITE);
-        restart.setBounds(x, startY, buttonWidth, buttonHeight);
-
         if (hasLoadButt) {
+            add(load);
             load.setFont(font);
             load.setBackground(Color.WHITE);
             load.setBounds(x, indentation + buttonHeight + startY, buttonWidth, buttonHeight);
 
         }
+
+        restart.setFont(font);
+        restart.setBackground(Color.WHITE);
+        restart.setBounds(x, startY, buttonWidth, buttonHeight);
+
         exit.setFont(font);
         exit.setBackground(Color.WHITE);
         exit.setBounds(x, (indentation + buttonHeight) * (hasLoadButt ? 2 : 1) + startY, buttonWidth, buttonHeight);

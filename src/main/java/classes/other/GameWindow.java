@@ -203,7 +203,10 @@ public class GameWindow {
         loadingRestartPanel.setLoadListener(e -> {
             accountActions.getAllInfoFromJson();
             changePanel(loadingRestartPanel, singlePlayer);
+            singlePlayer.setAlive(true);
             singlePlayer.requestFocus();
+            singlePlayer.backListener();
+            singlePlayer.start();
         });
 
         nonLoadingRestartPanel.setRestartListener(e -> {

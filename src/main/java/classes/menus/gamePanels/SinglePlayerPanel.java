@@ -104,7 +104,7 @@ public class SinglePlayerPanel extends GamePanel {
 
         start();
         checkApple(applesList);
-        addKeyListener(setListener());
+        backListener();
     }
 
     @Override

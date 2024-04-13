@@ -175,6 +175,7 @@ public class AccountActions {
         window.setSize(new Dimension(newPanel.getWidth(), newPanel.getHeight()));
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+        window.repaint();
     }
 
     public boolean getRememberMe() {

@@ -4,23 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainPanel extends FonPanel {
+public class MainPanel extends SizePanel {
     private final JButton start = new JButton("Single player");
     private final JButton multiplayer = new JButton("Multiplayer");
     private final JButton account = new JButton("Account");
     private final JButton controlButtons = new JButton("Control buttons");
     private final JButton exit = new JButton("Exit");
+    protected final Color color = Color.CYAN;
     private ActionListener exitListener;
 
     public MainPanel() {
+        JLabel fon = new JLabel(new ImageIcon("src/main/resources/files/sprites/other/fon.png"));
+        fon.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
         Font font = new Font("Calibri", Font.PLAIN, 50);
         exit.addActionListener(e -> System.exit(0));
 
-        add(start, 0);
-        add(multiplayer, 1);
-        add(controlButtons, 2);
-        add(account, 3);
-        add(exit, 4);
+        setLayout(null);
+        add(start);
+        add(multiplayer);
+        add(controlButtons);
+        add(account);
+        add(exit);
+        add(fon);
 
         int buttonWidth = 500, buttonHeight = 100, startPositionX = 800, startPositionY = 550, indentation = 30;
         start.setFont(font);

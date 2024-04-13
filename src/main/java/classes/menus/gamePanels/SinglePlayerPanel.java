@@ -17,8 +17,8 @@ import java.util.List;
 public class SinglePlayerPanel extends GamePanel {
     private final Snake snake = new Snake(
             Direction.LEFT,
-            GamePanel.GAME_PANEL_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
-            GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+            GamePanel.WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
+            GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer snakeTimer = new Timer(snake.getSpeed(), this);
 
@@ -97,8 +97,8 @@ public class SinglePlayerPanel extends GamePanel {
     public void restart() {
         isAlive = true;
         snake.createSnake(Direction.LEFT,
-                GamePanel.GAME_PANEL_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
-                GamePanel.GAME_PANEL_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
+                GamePanel.WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
+                GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
         snake.setScore((short) 0);
         snake.setSpeed(Snake.startSpeed);
 

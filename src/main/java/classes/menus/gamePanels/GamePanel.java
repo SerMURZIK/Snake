@@ -3,6 +3,7 @@ package classes.menus.gamePanels;
 import classes.apples.Apple;
 import classes.apples.BonusApple;
 import classes.apples.RedApple;
+import classes.menus.SizePanel;
 import classes.other.Audio;
 
 import javax.swing.*;
@@ -12,18 +13,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-public abstract class GamePanel extends JPanel implements ActionListener {
-    public static int GAME_PANEL_WIDTH = 3300;
-    public static int GAME_PANEL_HEIGHT = 1200;
+public abstract class GamePanel extends SizePanel implements ActionListener {
+    private final String pathToAppleSprite = "src/main/resources/files/sprites/apples/";
 
-    protected final RedApple standardApple = new RedApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 1,
-            new ImageIcon("src/main/resources/files/sprites/apples/apple.png"));
+    protected final RedApple standardApple = new RedApple(WINDOW_WIDTH, WINDOW_HEIGHT, 1,
+            new ImageIcon(pathToAppleSprite + "apple.png"));
 
-    protected final BonusApple bonusGoodApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, 2,
-            new ImageIcon("src/main/resources/files/sprites/apples/goodApple.png"));
+    protected final BonusApple bonusGoodApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, 2,
+            new ImageIcon(pathToAppleSprite + "goodApple.png"));
 
-    protected final BonusApple bonusBadApple = new BonusApple(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT, -3,
-            new ImageIcon("src/main/resources/files/sprites/apples/badApple.png"));
+    protected final BonusApple bonusBadApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, -3,
+            new ImageIcon(pathToAppleSprite + "badApple.png"));
 
     protected final Apple[] applesList = {standardApple, bonusBadApple, bonusGoodApple};
     protected final Font font = new Font("TimesNewRoman", Font.BOLD, 50);
@@ -43,7 +43,7 @@ public abstract class GamePanel extends JPanel implements ActionListener {
         setBackground(new Color(54, 143, 255, 255));
         addKeyListener(listener);
     }
-
+    
     public boolean isAlive() {
         return isAlive;
     }
@@ -66,16 +66,6 @@ public abstract class GamePanel extends JPanel implements ActionListener {
 
     public abstract void checkApple(Apple... apples);
 
-    @Override
-    public int getWidth() {
-        return 3300;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1200;
-    }
-
     public void playSound(boolean play) {
         if (play) {
             audio.play();
@@ -85,6 +75,6 @@ public abstract class GamePanel extends JPanel implements ActionListener {
     }
 
     public abstract KeyListener setListener();
-
+    
     public abstract void restart();
 }

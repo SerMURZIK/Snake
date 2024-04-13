@@ -32,8 +32,7 @@ public class MultiplayerPanel extends GamePanel {
         super.paintComponent(graphics);
         if (isAlive) {
             drawApple(graphics, standardApple);
-            drawApple(graphics, bonusBadApple);
-            drawApple(graphics, bonusGoodApple);
+            drawApple(graphics, bonusApple);
 
             graphics.setFont(font);
 

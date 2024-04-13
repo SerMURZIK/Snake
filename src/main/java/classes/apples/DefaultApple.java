@@ -4,9 +4,9 @@ import classes.snakeClasses.blockClasses.Body;
 
 import javax.swing.*;
 
-public class RedApple extends Apple {
+public class DefaultApple extends Apple {
 
-    public RedApple(int windowWidth, int windowHeight, int coefficient, ImageIcon appleIco) {
+    public DefaultApple(int windowWidth, int windowHeight, int coefficient, ImageIcon appleIco) {
         super(windowWidth, windowHeight, coefficient, appleIco);
         createApple();
     }

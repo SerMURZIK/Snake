@@ -2,7 +2,7 @@ package classes.menus.gamePanels;
 
 import classes.apples.Apple;
 import classes.apples.BonusApple;
-import classes.apples.RedApple;
+import classes.apples.DefaultApple;
 import classes.menus.SizePanel;
 import classes.other.Audio;
 
@@ -16,16 +16,13 @@ import java.io.File;
 public abstract class GamePanel extends SizePanel implements ActionListener {
     private final String pathToAppleSprite = "src/main/resources/files/sprites/apples/";
 
-    protected final RedApple standardApple = new RedApple(WINDOW_WIDTH, WINDOW_HEIGHT, 1,
+    protected final DefaultApple standardApple = new DefaultApple(WINDOW_WIDTH, WINDOW_HEIGHT, 1,
             new ImageIcon(pathToAppleSprite + "apple.png"));
 
-    protected final BonusApple bonusGoodApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, 2,
+    protected final BonusApple bonusApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, 2,
             new ImageIcon(pathToAppleSprite + "goodApple.png"));
 
-    protected final BonusApple bonusBadApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, -3,
-            new ImageIcon(pathToAppleSprite + "badApple.png"));
-
-    protected final Apple[] applesList = {standardApple, bonusBadApple, bonusGoodApple};
+    protected final Apple[] applesList = {standardApple, bonusApple};
     protected final Font font = new Font("TimesNewRoman", Font.BOLD, 50);
     protected boolean isAlive = true;
     private final JButton exitToMenu = new JButton("Main menu");
@@ -47,7 +44,7 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     public void backListener() {
         addKeyListener(setListener());
     }
-    
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -83,6 +80,6 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     }
 
     public abstract KeyListener setListener();
-    
+
     public abstract void restart();
 }

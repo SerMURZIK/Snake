@@ -45,11 +45,9 @@ public class SinglePlayerPanel extends GamePanel {
             graphics.drawImage(standardApple.getAppleImage(),
                     standardApple.getX(), standardApple.getY(), null);
 
-            graphics.drawImage(bonusBadApple.getAppleImage(),
-                    bonusBadApple.getX(), bonusBadApple.getY(), null);
+            graphics.drawImage(bonusApple.getAppleImage(),
+                    bonusApple.getX(), bonusApple.getY(), null);
 
-            graphics.drawImage(bonusGoodApple.getAppleImage(),
-                    bonusGoodApple.getX(), bonusGoodApple.getY(), null);
             graphics.setFont(font);
 
             Block currentBlock = snake.getHead();

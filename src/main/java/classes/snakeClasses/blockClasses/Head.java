@@ -44,19 +44,19 @@ public class Head extends Block {
     }
 
     public ImageIcon getHeadDown() {
-        return new ImageIcon("src/main/resources/files/sprites/single/headDown.png");
+        return new ImageIcon(this.getClass().getResource("/sprites/single/headDown.png"));
     }
 
     public ImageIcon getHeadRight() {
-        return new ImageIcon("src/main/resources/files/sprites/single/headRight.png");
+        return new ImageIcon(this.getClass().getResource("/sprites/single/headRight.png"));
     }
 
     public ImageIcon getHeadLeft() {
-        return new ImageIcon("src/main/resources/files/sprites/single/headLeft.png");
+        return new ImageIcon(this.getClass().getResource("/sprites/single/headLeft.png"));
     }
 
     public ImageIcon getHeadUp() {
-        return new ImageIcon("src/main/resources/files/sprites/single/headUp.png");
+        return new ImageIcon(this.getClass().getResource("/sprites/single/headUp.png"));
     }
 
     public Direction getDirection() {

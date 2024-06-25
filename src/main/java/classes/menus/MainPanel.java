@@ -14,7 +14,7 @@ public class MainPanel extends SizePanel {
     private ActionListener exitListener;
 
     public MainPanel() {
-        JLabel fon = new JLabel(new ImageIcon("src/main/resources/files/sprites/other/fon.png"));
+        JLabel fon = new JLabel(new ImageIcon(this.getClass().getResource("/sprites/other/fon.png")));
         fon.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Font font = new Font("Calibri", Font.PLAIN, 50);

@@ -1,4 +1,4 @@
 target
 *.iml
+out
 .idea
-src/main/resources/files/saves/gamers/*.json

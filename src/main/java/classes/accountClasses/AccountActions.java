@@ -19,10 +19,13 @@ import java.util.Optional;
 
 public class AccountActions {
 
-    private static final String SERVICE_FOLDER_JSON = "src/main/resources/files/saves/service/%s.json";
-    private static final String GAMERS_FOLDER_JSON = "src/main/resources/files/saves/gamers/%s.json";
-    private static final String CLEAR_ACCOUNT = "clearAccount";
-    private static final String CURRENT_LOGIN = "currentLogin";
+    private static final String USER_FOLDER = System.getProperty("user.home");
+    private static final String GAMERS_SAVES_FOLDER_PATH =
+            String.format("%s\\AppData\\LocalLow\\SnakeSaves\\", USER_FOLDER);
+    private static final String GAMERS_SAVES_JSON_FORM = GAMERS_SAVES_FOLDER_PATH + "%s.json";
+    private static final String SERVICE_SAVES_JSON_FORM = "service-saves/%s.json";
+    private static final String CLEAR_ACCOUNT_FILE_NAME = "clearAccount";
+    private static final String CURRENT_LOGIN_FILE_NAME = "currentLogin";
 
     private boolean rememberMe; //for persons who signed for current session (isSignedForCurrentSession)
     private final JFrame window;
@@ -47,12 +50,14 @@ public class AccountActions {
         this.gamePanel = gamePanel;
         this.signUpPanel = signUpPanel;
         this.signedPanel = signedPanel;
+        createGameSavesFolders();
     }
 
     public void signIn() {
         JsonReader<SaveSnakeClass> reader = new JsonReader<>();
-        if (new File(String.format(GAMERS_FOLDER_JSON, signInPanel.getLogin())).exists()) {
-            SaveSnakeClass saveSnakeClass = reader.getObjectFromJson(GAMERS_FOLDER_JSON, signInPanel.getLogin(), SaveSnakeClass.class);
+        if (new File(String.format(GAMERS_SAVES_JSON_FORM, signInPanel.getLogin())).exists()) {
+            SaveSnakeClass saveSnakeClass = reader.getObjectFromJson(
+                    GAMERS_SAVES_JSON_FORM, signInPanel.getLogin(), SaveSnakeClass.class);
 
             if (signInPanel.getPassword().equals(saveSnakeClass.getPassword())) {
                 writeCurrentAccountJson(signInPanel.getLogin(), signInPanel.getPassword(), signInPanel.getSigned());
@@ -73,7 +78,7 @@ public class AccountActions {
     }
 
     public void writeNewAccount() {
-        SaveSnakeJsonWriter.write(GAMERS_FOLDER_JSON, signUpPanel.getLogin(),
+        SaveSnakeJsonWriter.write(GAMERS_SAVES_JSON_FORM, signUpPanel.getLogin(),
                 signUpPanel.getPassword(),
                 gamePanel.getSnake().getScore(),
                 gamePanel.getSnake().getSpeed(),
@@ -88,18 +93,17 @@ public class AccountActions {
     }
 
     public void writeCurrentAccountJson(String login, String password, boolean signed) {
-        CurrentAccountJsonWriter.write(SERVICE_FOLDER_JSON, CURRENT_LOGIN, login, password, signed);
-        rememberMe = signed;
+        CurrentAccountJsonWriter.write(GAMERS_SAVES_JSON_FORM, CURRENT_LOGIN_FILE_NAME, login, password, signed);
         updateCurrentAccount();
     }
 
     public void saveGame() {
-        SaveSnakeJsonWriter.write(GAMERS_FOLDER_JSON, currentAccount.getLogin(), currentAccount.getPassword(),
+        SaveSnakeJsonWriter.write(GAMERS_SAVES_JSON_FORM, currentAccount.getLogin(), currentAccount.getPassword(),
                 gamePanel.getSnake().getScore(), gamePanel.getSnake().getSpeed(),
                 gamePanel.getSnake().getDirection(),
                 getSnakeXCoordinates(), getSnakeYCoordinates());
 
-        writeCurrentAccountJson(currentAccount.getLogin(), currentAccount.getPassword(), currentAccount.getSigned());
+        writeCurrentAccountJson(currentAccount.getLogin(), currentAccount.getPassword(), getSigned());
     }
 
     public List<List<Integer>> getSnakeCoordinates() {
@@ -132,7 +136,8 @@ public class AccountActions {
     public void readAccountFromJson() {
         JsonReader<CurrentAccountSaveClass> jsonReader = new JsonReader<>();
         CurrentAccountSaveClass currentAccountSaveClass =
-                jsonReader.getObjectFromJson(SERVICE_FOLDER_JSON, CURRENT_LOGIN, CurrentAccountSaveClass.class);
+                jsonReader.getObjectFromJson(GAMERS_SAVES_JSON_FORM, CURRENT_LOGIN_FILE_NAME,
+                        CurrentAccountSaveClass.class);
 
         currentAccount.setLogin(currentAccountSaveClass.getLogin());
         currentAccount.setPassword(currentAccountSaveClass.getPassword());
@@ -141,9 +146,10 @@ public class AccountActions {
     }
 
     public void getAllInfoFromJson() {
-        String folder = currentAccount.getSigned() || rememberMe ? GAMERS_FOLDER_JSON : SERVICE_FOLDER_JSON;
+        String folder = currentAccount.getSigned() || rememberMe ? GAMERS_SAVES_JSON_FORM : SERVICE_SAVES_JSON_FORM;
         JsonReader<SaveSnakeClass> jsonReader = new JsonReader<>();
-        SaveSnakeClass saveSnakeClass = jsonReader.getObjectFromJson(folder, currentAccount.getLogin(), SaveSnakeClass.class);
+        SaveSnakeClass saveSnakeClass = jsonReader.getObjectFromJson(folder, currentAccount.getLogin(),
+                SaveSnakeClass.class);
         Optional.ofNullable(saveSnakeClass)
                 .ifPresent(this::setSavedSnakeInfoToPanel);
     }
@@ -156,17 +162,18 @@ public class AccountActions {
 
     public void cleanAccount() {
         JsonReader<CurrentAccount> jsonReader = new JsonReader<>();
-        CurrentAccount currAcc = jsonReader.getObjectFromJson(SERVICE_FOLDER_JSON, CLEAR_ACCOUNT, CurrentAccount.class);
+        CurrentAccount currAcc = jsonReader.getObjectFromJson(SERVICE_SAVES_JSON_FORM, CLEAR_ACCOUNT_FILE_NAME,
+                CurrentAccount.class);
 
-        writeCurrentAccountJson(CLEAR_ACCOUNT, currAcc.getPassword(), false);
+        writeCurrentAccountJson(CLEAR_ACCOUNT_FILE_NAME, currAcc.getPassword(), false);
+        rememberMe = false;
         getAllInfoFromJson();
 
-        rememberMe = false;
         changePanel(signedPanel, mainPanel);
     }
 
     public void updateExitListener() {
-        mainPanel.updateSign(currentAccount.getSigned());
+        mainPanel.updateSign(getSigned());
     }
 
     public void changePanel(JPanel removePanel, JPanel newPanel) {
@@ -184,10 +191,21 @@ public class AccountActions {
 
     public void updateCurrentAccount() {
         JsonReader<CurrentAccount> reader = new JsonReader<>();
-        currentAccount = reader.getObjectFromJson(SERVICE_FOLDER_JSON, CURRENT_LOGIN, CurrentAccount.class);
+        currentAccount = reader.getObjectFromJson(GAMERS_SAVES_JSON_FORM, CURRENT_LOGIN_FILE_NAME,
+                CurrentAccount.class);
+
     }
 
     public CurrentAccount getCurrentAccount() {
         return currentAccount;
+    }
+
+    public boolean getSigned() {
+        return currentAccount.getSigned();
+    }
+
+    private void createGameSavesFolders() {
+        File theDir = new File(GAMERS_SAVES_FOLDER_PATH);
+        theDir.mkdirs();
     }
 }

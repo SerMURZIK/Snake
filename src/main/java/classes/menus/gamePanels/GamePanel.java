@@ -11,22 +11,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.io.File;
 
 public abstract class GamePanel extends SizePanel implements ActionListener {
-    private final String pathToAppleSprite = "src/main/resources/files/sprites/apples/";
+    private final String pathToAppleSprite = "/sprites/apples/";
 
     protected final DefaultApple standardApple = new DefaultApple(WINDOW_WIDTH, WINDOW_HEIGHT, 1,
-            new ImageIcon(pathToAppleSprite + "apple.png"));
+            new ImageIcon(this.getClass().getResource(pathToAppleSprite + "apple.png")));
 
     protected final BonusApple bonusApple = new BonusApple(WINDOW_WIDTH, WINDOW_HEIGHT, 2,
-            new ImageIcon(pathToAppleSprite + "goodApple.png"));
+            new ImageIcon(this.getClass().getResource(pathToAppleSprite + "goodApple.png")));
 
     protected final Apple[] applesList = {standardApple, bonusApple};
     protected final Font font = new Font("TimesNewRoman", Font.BOLD, 50);
     protected boolean isAlive = true;
     private final JButton exitToMenu = new JButton("Main menu");
-    private final Audio audio = new Audio(new File("src/main/resources/sound/soundtrack.wav"));
+    private final Audio audio = new Audio(this.getClass().getResourceAsStream("/sound/soundtrack.wav"));
     protected final KeyListener listener = setListener();
 
     public GamePanel() {
@@ -40,6 +39,7 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
         setBackground(new Color(54, 143, 255, 255));
         addKeyListener(listener);
     }
+
 
     public void backListener() {
         addKeyListener(setListener());

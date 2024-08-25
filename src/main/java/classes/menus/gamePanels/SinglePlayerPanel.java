@@ -144,6 +144,13 @@ public class SinglePlayerPanel extends GamePanel {
         };
     }
 
+    @Override
+    public void updateAppleLocation() {
+        for (Apple apple : applesList) {
+            apple.createApple();
+        }
+    }
+
     public Snake getSnake() {
         return snake;
     }

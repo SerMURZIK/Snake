@@ -71,6 +71,8 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
 
     public abstract void checkApple(Apple... apples);
 
+    public abstract void updateAppleLocation();
+
     public void playSound(boolean play) {
         if (play) {
             audio.play();
@@ -82,4 +84,8 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     public abstract KeyListener setListener();
 
     public abstract void restart();
+
+    public Apple[] getAppleList() {
+        return applesList;
+    }
 }

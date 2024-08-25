@@ -64,7 +64,6 @@ public class AccountActions {
 
                 rememberMe = true;
                 getAllInfoFromJson();
-                changePanel(signInPanel, mainPanel);
 
                 signInPanel.removeWrongMessage();
                 signInPanel.cleanFields();
@@ -72,6 +71,7 @@ public class AccountActions {
                 signInPanel.showWrongMessage();
             }
             readAccountFromJson();
+            gamePanel.updateAppleLocation();
         } else {
             signInPanel.showWrongMessage();
         }
@@ -88,7 +88,6 @@ public class AccountActions {
         rememberMe = true;
         getAllInfoFromJson();
         readAccountFromJson();
-        changePanel(signUpPanel, mainPanel);
         signUpPanel.cleanFields();
     }
 
@@ -143,6 +142,7 @@ public class AccountActions {
         currentAccount.setPassword(currentAccountSaveClass.getPassword());
         currentAccount.setSigned(currentAccountSaveClass.getSigned());
         updateExitListener();
+        gamePanel.updateAppleLocation();
     }
 
     public void getAllInfoFromJson() {
@@ -152,12 +152,14 @@ public class AccountActions {
                 SaveSnakeClass.class);
         Optional.ofNullable(saveSnakeClass)
                 .ifPresent(this::setSavedSnakeInfoToPanel);
+        gamePanel.updateAppleLocation();
     }
 
 
     private void setSavedSnakeInfoToPanel(SaveSnakeClass snakeSave) {
         gamePanel.setInfo(snakeSave.getScore(), snakeSave.getSpeed(),
                 snakeSave.getDirection(), snakeSave.getX(), snakeSave.getY());
+        gamePanel.updateAppleLocation();
     }
 
     public void cleanAccount() {
@@ -169,7 +171,7 @@ public class AccountActions {
         rememberMe = false;
         getAllInfoFromJson();
 
-        changePanel(signedPanel, mainPanel);
+        gamePanel.updateAppleLocation();
     }
 
     public void updateExitListener() {

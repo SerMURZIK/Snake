@@ -107,8 +107,8 @@ public class GameWindow {
         window.repaint();
     }
 
-    public void openAccountMenu() {
-        window.remove(mainPanel);
+    public void openAccountMenu(JPanel currentPanel) {
+        window.remove(currentPanel);
         currentAccount = accountActions.getCurrentAccount();
         if (currentAccount.getSigned() || accountActions.getRememberMe()) {
             window.add(signedPanel);
@@ -148,7 +148,7 @@ public class GameWindow {
 
         mainPanel.setExitListener(e -> accountActions.cleanAccount());
         mainPanel.setTabWithControlButtonsListener(e -> changePanel(mainPanel, tabWithControlButtons));
-        mainPanel.setAccountListener(e -> openAccountMenu());
+        mainPanel.setAccountListener(e -> openAccountMenu(mainPanel));
     }
 
     public void addSignedPanelListeners() {
@@ -160,7 +160,7 @@ public class GameWindow {
 
         signedPanel.setExitFromAccountListener(e -> {
             accountActions.cleanAccount();
-            changePanel(signedPanel, mainPanel);
+            openAccountMenu(signedPanel);
         });
     }
 
@@ -177,7 +177,10 @@ public class GameWindow {
             signInPanel.cleanFields();
         });
 
-        signInPanel.setEnterListener(e -> accountActions.signIn());
+        signInPanel.setEnterListener(e -> {
+            accountActions.signIn();
+            openAccountMenu(signInPanel);
+        });
     }
 
     public void addSignUpPanelListeners() {
@@ -186,7 +189,10 @@ public class GameWindow {
             signUpPanel.cleanFields();
         });
 
-        signUpPanel.setEnterListener(e -> accountActions.writeNewAccount());
+        signUpPanel.setEnterListener(e -> {
+            accountActions.writeNewAccount();
+            openAccountMenu(signUpPanel);
+        });
     }
 
     public void addTeachControlPanelListeners() {
@@ -198,6 +204,7 @@ public class GameWindow {
             singlePlayer.restart();
             changePanel(loadingRestartPanel, singlePlayer);
             singlePlayer.requestFocus();
+            singlePlayer.updateAppleLocation();
         });
 
         loadingRestartPanel.setLoadListener(e -> {
@@ -207,12 +214,14 @@ public class GameWindow {
             singlePlayer.requestFocus();
             singlePlayer.backListener();
             singlePlayer.start();
+            singlePlayer.updateAppleLocation();
         });
 
         nonLoadingRestartPanel.setRestartListener(e -> {
             multiplayer.restart();
             changePanel(nonLoadingRestartPanel, multiplayer);
             multiplayer.requestFocus();
+            multiplayer.updateAppleLocation();
         });
 
         setOpeningListeners();

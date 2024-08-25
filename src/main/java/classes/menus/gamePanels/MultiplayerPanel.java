@@ -99,6 +99,13 @@ public class MultiplayerPanel extends GamePanel {
     }
 
     @Override
+    public void updateAppleLocation() {
+        for (Apple apple : applesList) {
+            apple.createApple();
+        }
+    }
+
+    @Override
     public KeyListener setListener() {
         return new KeyAdapter() {
             @Override

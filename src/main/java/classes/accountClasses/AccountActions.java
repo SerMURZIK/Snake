@@ -11,7 +11,6 @@ import classes.menus.gamePanels.SinglePlayerPanel;
 import classes.snakeClasses.blockClasses.Block;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,28 +27,22 @@ public class AccountActions {
     private static final String CURRENT_LOGIN_FILE_NAME = "currentLogin";
 
     private boolean rememberMe; //for persons who signed for current session (isSignedForCurrentSession)
-    private final JFrame window;
     private final MainPanel mainPanel;
     private final SignInPanel signInPanel;
     private CurrentAccount currentAccount;
     private final SinglePlayerPanel gamePanel;
     private final SignUpPanel signUpPanel;
-    private final SignedPanel signedPanel;
 
-    public AccountActions(JFrame window,
-                          MainPanel mainPanel,
+    public AccountActions(MainPanel mainPanel,
                           SignInPanel signInPanel,
                           CurrentAccount currentAccount,
                           SinglePlayerPanel gamePanel,
-                          SignUpPanel signUpPanel,
-                          SignedPanel signedPanel) {
-        this.window = window;
+                          SignUpPanel signUpPanel) {
         this.mainPanel = mainPanel;
         this.signInPanel = signInPanel;
         this.currentAccount = currentAccount;
         this.gamePanel = gamePanel;
         this.signUpPanel = signUpPanel;
-        this.signedPanel = signedPanel;
         createGameSavesFolders();
     }
 
@@ -176,15 +169,6 @@ public class AccountActions {
 
     public void updateExitListener() {
         mainPanel.updateSign(getSigned());
-    }
-
-    public void changePanel(JPanel removePanel, JPanel newPanel) {
-        window.remove(removePanel);
-        window.add(newPanel);
-        window.setSize(new Dimension(newPanel.getWidth(), newPanel.getHeight()));
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.repaint();
     }
 
     public boolean getRememberMe() {

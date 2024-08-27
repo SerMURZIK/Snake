@@ -16,6 +16,7 @@ public class BonusApple extends Apple {
     public void createApple() {
         setX(((int) (Math.random() * windowWidth / Body.BODY_SIZE)) * Body.BODY_SIZE);
         setY(((int) (Math.random() * windowHeight / Body.BODY_SIZE)) * Body.BODY_SIZE);
-        coefficient = (int) (Math.random() * 5) - 3;
+        coefficient = (int) ((Math.random() * 100) / 10 - (Math.random() * 70) / 10);
+        System.out.println(coefficient);
     }
 }

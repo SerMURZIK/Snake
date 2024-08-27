@@ -27,6 +27,7 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     private final JButton exitToMenu = new JButton("Main menu");
     private final Audio audio = new Audio(this.getClass().getResourceAsStream("/sound/soundtrack.wav"));
     protected final KeyListener listener = setListener();
+    protected final String DEATH_MESSAGE = "YOU DIED";
 
     public GamePanel() {
         setLayout(null);
@@ -84,8 +85,4 @@ public abstract class GamePanel extends SizePanel implements ActionListener {
     public abstract KeyListener setListener();
 
     public abstract void restart();
-
-    public Apple[] getAppleList() {
-        return applesList;
-    }
 }

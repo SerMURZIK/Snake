@@ -31,24 +31,28 @@ public class MultiplayerPanel extends GamePanel {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         if (isAlive) {
-            drawApple(graphics, standardApple);
-            drawApple(graphics, bonusApple);
-
-            graphics.setFont(font);
-
-            drawSnake(yellowSnake, graphics);
-            drawSnake(greenSnake, graphics);
-
-            graphics.setColor(Color.green);
-
-            graphics.drawString("Yellow's score: " + yellowSnake.getScore(), getWidth() - 600, 100);
-            graphics.drawString("Green's score: " + greenSnake.getScore(), 250, 100);
-
+            paintGame(graphics);
         } else {
+            paintGame(graphics);
             graphics.setColor(Color.red);
             graphics.setFont(font);
-            graphics.drawString("You died", (getWidth() / 2) - 140, getHeight() / 2);
+            graphics.drawString(DEATH_MESSAGE, (getWidth() / 2) - 140, getHeight() / 2);
         }
+    }
+
+    private void paintGame(Graphics graphics) {
+        drawApple(graphics, standardApple);
+        drawApple(graphics, bonusApple);
+
+        graphics.setFont(font);
+
+        drawSnake(yellowSnake, graphics);
+        drawSnake(greenSnake, graphics);
+
+        graphics.setColor(Color.green);
+
+        graphics.drawString("Yellow's score: " + yellowSnake.getScore(), getWidth() - 600, 100);
+        graphics.drawString("Green's score: " + greenSnake.getScore(), 250, 100);
     }
 
     private void drawApple(Graphics graphics, Apple apple) {
@@ -87,12 +91,12 @@ public class MultiplayerPanel extends GamePanel {
         for (Apple apple : apples) {
             if (apple.wasAppleEaten(yellowSnake, apple, apples)) {
                 yellowSnake.setSpeed((short) (yellowSnake.getSpeed() - (2 * apple.getCoefficient())));
-                yellowSnake.setScore((short) (yellowSnake.getScore() + apple.getCoefficient()));
+                yellowSnake.setScore((short) (yellowSnake.getScore() + apple.getPreviousCoefficient()));
                 break;
             }
             if (apple.wasAppleEaten(greenSnake, apple, apples)) {
                 greenSnake.setSpeed((short) (greenSnake.getSpeed() - (2 * apple.getCoefficient())));
-                greenSnake.setScore((short) (greenSnake.getScore() + apple.getCoefficient()));
+                greenSnake.setScore((short) (greenSnake.getScore() + apple.getPreviousCoefficient()));
                 break;
             }
         }

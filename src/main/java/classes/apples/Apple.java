@@ -9,9 +9,11 @@ public abstract class Apple {
     private int x, y;
     protected int coefficient, windowWidth, windowHeight;
     private final ImageIcon appleIco;
+    private int previousCoefficient; //for correct score
 
     public Apple(int windowWidth, int windowHeight, int coefficient, ImageIcon appleIco) {
         this.coefficient = coefficient;
+        this.previousCoefficient = coefficient;
         this.appleIco = appleIco;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
@@ -29,6 +31,7 @@ public abstract class Apple {
                     snake.removeBody();
                 }
             }
+            previousCoefficient = coefficient;
             createApplesList(apples);
             return true;
         }
@@ -65,5 +68,9 @@ public abstract class Apple {
         for (Apple apple : apples) {
             apple.createApple();
         }
+    }
+
+    public int getPreviousCoefficient() {
+        return previousCoefficient;
     }
 }

@@ -29,13 +29,11 @@ public class GameWindow {
 
     private CurrentAccount currentAccount = new CurrentAccount();
     private final AccountActions accountActions = new AccountActions(
-            window,
             mainPanel,
             signInPanel,
             currentAccount,
             singlePlayer,
-            signUpPanel,
-            signedPanel);
+            signUpPanel);
 
     public GameWindow() {
         accountActions.readAccountFromJson();

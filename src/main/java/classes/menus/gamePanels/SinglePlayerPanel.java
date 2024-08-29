@@ -42,30 +42,34 @@ public class SinglePlayerPanel extends GamePanel {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         if (isAlive) {
-            graphics.drawImage(standardApple.getAppleImage(),
-                    standardApple.getX(), standardApple.getY(), null);
-
-            graphics.drawImage(bonusApple.getAppleImage(),
-                    bonusApple.getX(), bonusApple.getY(), null);
-
-            graphics.setFont(font);
-
-            Block currentBlock = snake.getHead();
-            do {
-                currentBlock.draw(graphics);
-                currentBlock = currentBlock.getNext();
-            } while (currentBlock != null);
-
-            graphics.setColor(Color.green);
-
-            graphics.drawString("Score: " + snake.getScore(), getWidth() - 600, 100);
-
+            paintGame(graphics);
         } else {
+            paintGame(graphics);
             graphics.setColor(Color.red);
             graphics.setFont(font);
-            graphics.drawString("You died", (getWidth() / 2) - 140, getHeight() / 2);
+            graphics.drawString(DEATH_MESSAGE, (getWidth() / 2) - 140, getHeight() / 2);
         }
         repaint();
+    }
+
+    private void paintGame(Graphics graphics) {
+        graphics.drawImage(standardApple.getAppleImage(),
+                standardApple.getX(), standardApple.getY(), null);
+
+        graphics.drawImage(bonusApple.getAppleImage(),
+                bonusApple.getX(), bonusApple.getY(), null);
+
+        graphics.setFont(font);
+
+        Block currentBlock = snake.getHead();
+        do {
+            currentBlock.draw(graphics);
+            currentBlock = currentBlock.getNext();
+        } while (currentBlock != null);
+
+        graphics.setColor(Color.green);
+
+        graphics.drawString("Score: " + snake.getScore(), getWidth() - 600, 100);
     }
 
     @Override
@@ -85,7 +89,7 @@ public class SinglePlayerPanel extends GamePanel {
         for (Apple apple : apples) {
             if (apple.wasAppleEaten(snake, apple, apples)) {
                 snake.setSpeed((short) (snake.getSpeed() - (2 * apple.getCoefficient())));
-                snake.setScore((short) (snake.getScore() + apple.getCoefficient()));
+                snake.setScore((short) (snake.getScore() + apple.getPreviousCoefficient()));
                 break;
             }
         }

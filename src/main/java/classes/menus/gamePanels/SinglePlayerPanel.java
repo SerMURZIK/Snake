@@ -77,7 +77,7 @@ public class SinglePlayerPanel extends GamePanel {
         if (isAlive) {
             snake.getTail().move();
             checkApple(applesList);
-            isAlive = snake.checkDeath(getWidth(), getHeight()) && snake.getScore() >= 0;
+            isAlive = snake.getScore() >= 0 && snake.checkDeath(getWidth(), getHeight());
         } else {
             removeKeyListener(listener);
         }

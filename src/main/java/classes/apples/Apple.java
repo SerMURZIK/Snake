@@ -1,6 +1,6 @@
 package classes.apples;
 
-import classes.snakeClasses.Snake;
+import classes.snakeClasses.snakeEntityClasses.SnakeEntity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,29 +9,26 @@ public abstract class Apple {
     private int x, y;
     protected int coefficient, windowWidth, windowHeight;
     private final ImageIcon appleIco;
-    private int previousCoefficient; //for correct score
 
     public Apple(int windowWidth, int windowHeight, int coefficient, ImageIcon appleIco) {
         this.coefficient = coefficient;
-        this.previousCoefficient = coefficient;
         this.appleIco = appleIco;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
     }
 
-    public boolean wasAppleEaten(Snake snake, Apple apple, Apple... apples) {
-        if (snake.getHead().getX() == apple.getX() &&
-                snake.getHead().getY() == apple.getY()) {
+    public boolean wasAppleEaten(SnakeEntity snakeEntity, Apple apple, Apple... apples) {
+        if (snakeEntity.getHead().getX() == apple.getX() &&
+                snakeEntity.getHead().getY() == apple.getY()) {
             if (coefficient > 0) {
                 for (int i = 0; i < coefficient; i++) {
-                    snake.addBody();
+                    snakeEntity.addBody();
                 }
             } else if (coefficient < 0) {
                 for (int i = 0; i > coefficient; i--) {
-                    snake.removeBody();
+                    snakeEntity.removeBody();
                 }
             }
-            previousCoefficient = coefficient;
             createApplesList(apples);
             return true;
         }
@@ -68,9 +65,5 @@ public abstract class Apple {
         for (Apple apple : apples) {
             apple.createApple();
         }
-    }
-
-    public int getPreviousCoefficient() {
-        return previousCoefficient;
     }
 }

@@ -1,5 +1,6 @@
-package classes.snakeClasses;
+package classes.snakeClasses.snakeEntityClasses;
 
+import classes.snakeClasses.Direction;
 import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 import classes.snakeClasses.blockClasses.Head;
@@ -8,14 +9,11 @@ import java.util.List;
 
 import static classes.snakeClasses.blockClasses.Block.BODY_SIZE;
 
-public class Snake {
-    private short score = 0;
-    public static final short startSpeed = 100;
-    private short speed = startSpeed;
+public class SnakeEntity extends SnakeInfo {
     private Head head;
     private Block tail;
 
-    public Snake(Direction direction, int initialX, int initialY) {
+    public SnakeEntity(Direction direction, int initialX, int initialY) {
         createSnake(direction, initialX, initialY);
     }
 
@@ -103,23 +101,7 @@ public class Snake {
         getHead().setDirection(direction);
     }
 
-    public short getScore() {
-        return score;
-    }
-
-    public void setScore(short score) {
-        this.score = score;
-    }
-
-    public short getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(short speed) {
-        this.speed = speed;
-    }
-
-    public Snake getSnake() {
+    public SnakeEntity getSnake() {
         return this;
     }
 }

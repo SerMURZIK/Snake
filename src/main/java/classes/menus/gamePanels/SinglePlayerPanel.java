@@ -2,7 +2,7 @@ package classes.menus.gamePanels;
 
 import classes.apples.Apple;
 import classes.snakeClasses.Direction;
-import classes.snakeClasses.Snake;
+import classes.snakeClasses.snakeEntityClasses.SnakeEntity;
 import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 
@@ -15,17 +15,17 @@ import java.awt.event.KeyListener;
 import java.util.List;
 
 public class SinglePlayerPanel extends GamePanel {
-    private final Snake snake = new Snake(
+    private final SnakeEntity snakeEntity = new SnakeEntity(
             Direction.LEFT,
             GamePanel.WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
             GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
-    private final Timer snakeTimer = new Timer(snake.getSpeed(), this);
+    private final Timer snakeTimer = new Timer(snakeEntity.getSpeed(), this);
 
     public void setInfo(short score, short speed, Direction direction, List<Integer> x, List<Integer> y) {
-        snake.setScore(score);
-        snake.setSpeed(speed);
-        snake.createSnake(direction, x, y);
+        snakeEntity.setScore(score);
+        snakeEntity.setSpeed(speed);
+        snakeEntity.createSnake(direction, x, y);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SinglePlayerPanel extends GamePanel {
 
         graphics.setFont(font);
 
-        Block currentBlock = snake.getHead();
+        Block currentBlock = snakeEntity.getHead();
         do {
             currentBlock.draw(graphics);
             currentBlock = currentBlock.getNext();
@@ -69,15 +69,15 @@ public class SinglePlayerPanel extends GamePanel {
 
         graphics.setColor(Color.green);
 
-        graphics.drawString("Score: " + snake.getScore(), getWidth() - 600, 100);
+        graphics.drawString("Score: " + snakeEntity.getScore(), getWidth() - 600, 100);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isAlive) {
-            snake.getTail().move();
+            snakeEntity.getTail().move();
             checkApple(applesList);
-            isAlive = snake.checkDeath(getWidth(), getHeight()) && snake.getScore() >= 0;
+            isAlive = snakeEntity.getScore() >= 0 && snakeEntity.checkDeath(getWidth(), getHeight());
         } else {
             removeKeyListener(listener);
         }
@@ -87,9 +87,9 @@ public class SinglePlayerPanel extends GamePanel {
     @Override
     public void checkApple(Apple... apples) {
         for (Apple apple : apples) {
-            if (apple.wasAppleEaten(snake, apple, apples)) {
-                snake.setSpeed((short) (snake.getSpeed() - (2 * apple.getCoefficient())));
-                snake.setScore((short) (snake.getScore() + apple.getPreviousCoefficient()));
+            if (apple.wasAppleEaten(snakeEntity, apple, apples)) {
+                snakeEntity.setSpeed((short) (snakeEntity.getSpeed() - (2 * apple.getCoefficient())));
+                snakeEntity.setScore((short) (snakeEntity.getScore() + apple.getCoefficient()));
                 break;
             }
         }
@@ -98,11 +98,11 @@ public class SinglePlayerPanel extends GamePanel {
     @Override
     public void restart() {
         isAlive = true;
-        snake.createSnake(Direction.LEFT,
+        snakeEntity.createSnake(Direction.LEFT,
                 GamePanel.WINDOW_WIDTH / 2 / Body.BODY_SIZE * Body.BODY_SIZE,
                 GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
-        snake.setScore((short) 0);
-        snake.setSpeed(Snake.startSpeed);
+        snakeEntity.setScore((short) 0);
+        snakeEntity.setSpeed(SnakeEntity.startSpeed);
 
         start();
         checkApple(applesList);
@@ -117,23 +117,23 @@ public class SinglePlayerPanel extends GamePanel {
                 int key = e.getKeyCode();
                 switch (key) {
                     case KeyEvent.VK_UP:
-                        if (!snake.getDirection().equals(Direction.DOWN)) {
-                            snake.getSnake().getHead().setDirection(Direction.UP);
+                        if (!snakeEntity.getDirection().equals(Direction.DOWN)) {
+                            snakeEntity.getSnake().getHead().setDirection(Direction.UP);
                         }
                         break;
                     case KeyEvent.VK_DOWN:
-                        if (!snake.getDirection().equals(Direction.UP)) {
-                            snake.getSnake().getHead().setDirection(Direction.DOWN);
+                        if (!snakeEntity.getDirection().equals(Direction.UP)) {
+                            snakeEntity.getSnake().getHead().setDirection(Direction.DOWN);
                         }
                         break;
                     case KeyEvent.VK_LEFT:
-                        if (!snake.getDirection().equals(Direction.RIGHT)) {
-                            snake.getSnake().getHead().setDirection(Direction.LEFT);
+                        if (!snakeEntity.getDirection().equals(Direction.RIGHT)) {
+                            snakeEntity.getSnake().getHead().setDirection(Direction.LEFT);
                         }
                         break;
                     case KeyEvent.VK_RIGHT:
-                        if (!snake.getDirection().equals(Direction.LEFT)) {
-                            snake.getSnake().getHead().setDirection(Direction.RIGHT);
+                        if (!snakeEntity.getDirection().equals(Direction.LEFT)) {
+                            snakeEntity.getSnake().getHead().setDirection(Direction.RIGHT);
                         }
                         break;
                     case KeyEvent.VK_CONTROL:
@@ -155,7 +155,7 @@ public class SinglePlayerPanel extends GamePanel {
         }
     }
 
-    public Snake getSnake() {
-        return snake;
+    public SnakeEntity getSnake() {
+        return snakeEntity;
     }
 }

@@ -2,7 +2,7 @@ package classes.menus.gamePanels;
 
 import classes.apples.Apple;
 import classes.snakeClasses.Direction;
-import classes.snakeClasses.Snake;
+import classes.snakeClasses.snakeEntityClasses.SnakeEntity;
 import classes.snakeClasses.blockClasses.Block;
 import classes.snakeClasses.blockClasses.Body;
 
@@ -14,18 +14,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class MultiplayerPanel extends GamePanel {
-    private final Snake yellowSnake = new Snake(
+    private final SnakeEntity yellowSnake = new SnakeEntity(
             Direction.LEFT,
             GamePanel.WINDOW_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
             GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
-    private final Snake greenSnake = new Snake(
+    private final SnakeEntity greenSnakeEntity = new SnakeEntity(
             Direction.RIGHT,
             GamePanel.WINDOW_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
             GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
 
     private final Timer yellowSnakeTimer = new Timer(yellowSnake.getSpeed(), this);
-    private final Timer greenSnakeTimer = new Timer(greenSnake.getSpeed(), this);
+    private final Timer greenSnakeTimer = new Timer(greenSnakeEntity.getSpeed(), this);
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -47,12 +47,12 @@ public class MultiplayerPanel extends GamePanel {
         graphics.setFont(font);
 
         drawSnake(yellowSnake, graphics);
-        drawSnake(greenSnake, graphics);
+        drawSnake(greenSnakeEntity, graphics);
 
         graphics.setColor(Color.green);
 
         graphics.drawString("Yellow's score: " + yellowSnake.getScore(), getWidth() - 600, 100);
-        graphics.drawString("Green's score: " + greenSnake.getScore(), 250, 100);
+        graphics.drawString("Green's score: " + greenSnakeEntity.getScore(), 250, 100);
     }
 
     private void drawApple(Graphics graphics, Apple apple) {
@@ -60,7 +60,7 @@ public class MultiplayerPanel extends GamePanel {
                 apple.getX(), apple.getY(), null);
     }
 
-    private void drawSnake(Snake yellowSnake, Graphics graphics) {
+    private void drawSnake(SnakeEntity yellowSnake, Graphics graphics) {
         Block currentYellowBlock = yellowSnake.getHead();
         do {
             currentYellowBlock.draw(graphics);
@@ -75,11 +75,11 @@ public class MultiplayerPanel extends GamePanel {
                 yellowSnake.getTail().move();
             }
             if (e.getSource().equals(greenSnakeTimer)) {
-                greenSnake.getTail().move();
+                greenSnakeEntity.getTail().move();
             }
             checkApple(applesList);
             isAlive = (yellowSnake.checkDeath(getWidth(), getHeight()) && yellowSnake.getScore() >= 0) &&
-                    (greenSnake.checkDeath(getWidth(), getHeight()) && greenSnake.getScore() >= 0);
+                    (greenSnakeEntity.checkDeath(getWidth(), getHeight()) && greenSnakeEntity.getScore() >= 0);
         } else {
             removeKeyListener(listener);
         }
@@ -91,12 +91,12 @@ public class MultiplayerPanel extends GamePanel {
         for (Apple apple : apples) {
             if (apple.wasAppleEaten(yellowSnake, apple, apples)) {
                 yellowSnake.setSpeed((short) (yellowSnake.getSpeed() - (2 * apple.getCoefficient())));
-                yellowSnake.setScore((short) (yellowSnake.getScore() + apple.getPreviousCoefficient()));
+                yellowSnake.setScore((short) (yellowSnake.getScore() + apple.getCoefficient()));
                 break;
             }
-            if (apple.wasAppleEaten(greenSnake, apple, apples)) {
-                greenSnake.setSpeed((short) (greenSnake.getSpeed() - (2 * apple.getCoefficient())));
-                greenSnake.setScore((short) (greenSnake.getScore() + apple.getPreviousCoefficient()));
+            if (apple.wasAppleEaten(greenSnakeEntity, apple, apples)) {
+                greenSnakeEntity.setSpeed((short) (greenSnakeEntity.getSpeed() - (2 * apple.getCoefficient())));
+                greenSnakeEntity.setScore((short) (greenSnakeEntity.getScore() + apple.getCoefficient()));
                 break;
             }
         }
@@ -137,23 +137,23 @@ public class MultiplayerPanel extends GamePanel {
                         }
                         break;
                     case KeyEvent.VK_W:
-                        if (!greenSnake.getDirection().equals(Direction.DOWN)) {
-                            greenSnake.getSnake().getHead().setDirection(Direction.UP);
+                        if (!greenSnakeEntity.getDirection().equals(Direction.DOWN)) {
+                            greenSnakeEntity.getSnake().getHead().setDirection(Direction.UP);
                         }
                         break;
                     case KeyEvent.VK_S:
-                        if (!greenSnake.getDirection().equals(Direction.UP)) {
-                            greenSnake.getSnake().getHead().setDirection(Direction.DOWN);
+                        if (!greenSnakeEntity.getDirection().equals(Direction.UP)) {
+                            greenSnakeEntity.getSnake().getHead().setDirection(Direction.DOWN);
                         }
                         break;
                     case KeyEvent.VK_A:
-                        if (!greenSnake.getDirection().equals(Direction.RIGHT)) {
-                            greenSnake.getSnake().getHead().setDirection(Direction.LEFT);
+                        if (!greenSnakeEntity.getDirection().equals(Direction.RIGHT)) {
+                            greenSnakeEntity.getSnake().getHead().setDirection(Direction.LEFT);
                         }
                         break;
                     case KeyEvent.VK_D:
-                        if (!greenSnake.getDirection().equals(Direction.LEFT)) {
-                            greenSnake.getSnake().getHead().setDirection(Direction.RIGHT);
+                        if (!greenSnakeEntity.getDirection().equals(Direction.LEFT)) {
+                            greenSnakeEntity.getSnake().getHead().setDirection(Direction.RIGHT);
                         }
                         break;
                     case KeyEvent.VK_CONTROL:
@@ -175,13 +175,13 @@ public class MultiplayerPanel extends GamePanel {
                 GamePanel.WINDOW_WIDTH / 4 * 3 / Body.BODY_SIZE * Body.BODY_SIZE,
                 GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
         yellowSnake.setScore((short) 0);
-        yellowSnake.setSpeed(Snake.startSpeed);
+        yellowSnake.setSpeed(SnakeEntity.startSpeed);
 
-        greenSnake.createSnake(Direction.RIGHT,
+        greenSnakeEntity.createSnake(Direction.RIGHT,
                 GamePanel.WINDOW_WIDTH / 4 / Body.BODY_SIZE * Body.BODY_SIZE,
                 GamePanel.WINDOW_HEIGHT / 2 / Body.BODY_SIZE * Body.BODY_SIZE);
-        greenSnake.setScore((short) 0);
-        greenSnake.setSpeed(Snake.startSpeed);
+        greenSnakeEntity.setScore((short) 0);
+        greenSnakeEntity.setSpeed(SnakeEntity.startSpeed);
 
         start();
         checkApple(applesList);
